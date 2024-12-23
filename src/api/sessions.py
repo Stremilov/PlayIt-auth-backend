@@ -46,7 +46,9 @@ async def get_user_role(
         service: Annotated[UsersService, Depends(users_service)],
         session_data: SessionData = Depends(verifier)
 ):
-    users_role = service.get_user_role_by_username(session_data.username)
+    user = service.get_user_by_username(session_data.username)
+    users_role = user.role
+    # TODO: Raise HTTPExceptions in services, not in end-points?
     if users_role is None:
         raise HTTPException(status_code=404, detail="User not found")
     return GetUserRoleResponse(
