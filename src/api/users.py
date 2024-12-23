@@ -3,8 +3,7 @@ from typing import Annotated
 from src.schemas.users import (
     UserCreateSchema,
     UserUpdateSchema,
-    TelegramLoginResponse,
-    GetUserRoleResponse
+    TelegramLoginResponse
 )
 from src.services.users import UsersService
 from src.api.dependencies import users_service
@@ -34,13 +33,3 @@ async def telegram_login(
         message="Registered and logged in",
         user=created_user
     )
-
-# TODO: make get_user_role end-point
-# @router.post("/role", response_model=GetUserRoleResponse)
-# async def get_user_role():
-#     # logic
-#     return GetUserRoleResponse(
-#         status="success",
-#         message="User's role retrieved",
-#         role=
-#     )
