@@ -1,3 +1,7 @@
+import asyncio
+import uvicorn
+import logging
+
 from pydantic import BaseModel
 from fastapi import HTTPException, FastAPI, Response, Depends
 from uuid import UUID, uuid4
@@ -5,6 +9,11 @@ from uuid import UUID, uuid4
 from fastapi_sessions.backends.implementations import InMemoryBackend
 from fastapi_sessions.session_verifier import SessionVerifier
 from fastapi_sessions.frontends.implementations import SessionCookie, CookieParameters
+
+from src.db.db import init_db
+from src.api.routers import all_routers
+
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 class SessionData(BaseModel):
@@ -27,12 +36,12 @@ backend = InMemoryBackend[UUID, SessionData]()
 
 class BasicVerifier(SessionVerifier[UUID, SessionData]):
     def __init__(
-        self,
-        *,
-        identifier: str,
-        auto_error: bool,
-        backend: InMemoryBackend[UUID, SessionData],
-        auth_http_exception: HTTPException,
+            self,
+            *,
+            identifier: str,
+            auto_error: bool,
+            backend: InMemoryBackend[UUID, SessionData],
+            auth_http_exception: HTTPException,
     ):
         self._identifier = identifier
         self._auto_error = auto_error
@@ -72,7 +81,6 @@ app = FastAPI()
 
 @app.post("/create_session/{name}")
 async def create_session(name: str, response: Response):
-
     session = uuid4()
     data = SessionData(username=name)
 
@@ -92,3 +100,20 @@ async def del_session(response: Response, session_id: UUID = Depends(cookie)):
     await backend.delete(session_id)
     cookie.delete_from_response(response)
     return "deleted session"
+
+
+# My code:
+
+for router in all_routers:
+    app.include_router(router)
+
+
+async def main():
+    logging.info("Starting init_db()")
+    init_db()
+    logging.info("Starting FastAPI app")
+    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
