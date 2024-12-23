@@ -35,6 +35,7 @@
 
 ## Summary of Work Done
 
+
 ### **Implemented Features**
 1. **Migrated Models from Django ORM to SQLAlchemy (Synchronous):**
    - Rewrote all models to work with SQLAlchemy instead of Django ORM.
@@ -63,19 +64,22 @@
    - The endpoint now uses SQLAlchemy for database interactions and Pydantic for response validation.
 
 7. **Preserved Existing Session Logic:**
-   - The session handling logic in `main.py` (before my changes) was not modified. It remains as implemented previously.
+   - Moved the session handling logic from `main.py` into a separate directory for better modularity.
+   - Updated session dependencies to integrate seamlessly with FastAPI.
+
+8. **Implemented `get_user_role` Endpoint:**
+   - Added functionality to retrieve a user's role in the `Users` service.
+   - Integrated the endpoint with session validation and service logic.
+
+9. **Updated Repository and Service Logic:**
+   - Made adjustments to the repository and service layers for improved functionality and maintainability.
 
 ---
 
 ## Remaining Work
 
-1. **Implement `get_user_role` Endpoint:**
-   - Add functionality to retrieve a user's role in the `Users` service.
-
-2. **Error Handling:**
+1. **Error Handling:**
    - Implement global and local error handling to improve the robustness of the application.
 
-3. **Testing:**
+2. **Testing:**
    - Perform comprehensive testing of the endpoints, including edge cases and error scenarios.
-
----
