@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from src.utils.enums import RoleEnum
 
 
@@ -7,7 +7,6 @@ from src.utils.enums import RoleEnum
 class UserCreateSchema(BaseModel):
     username: str
     password: str
-    # email: EmailStr
     telegram_id: int
     role: RoleEnum
 
@@ -15,7 +14,6 @@ class UserCreateSchema(BaseModel):
 class UserUpdateSchema(BaseModel):
     username: Optional[str]
     password: Optional[str]
-    # email: Optional[EmailStr]
     telegram_id: Optional[int]
     role: Optional[RoleEnum]
 
@@ -24,7 +22,6 @@ class UserSchema(BaseModel):
     id: int
     username: str
     password: str
-    # email: EmailStr
     telegram_id: int
     role: RoleEnum
 
@@ -42,10 +39,3 @@ class TelegramLoginResponse(BaseModel):
         from_attributes = True
 
 
-class GetUserRoleResponse(BaseModel):
-    status: str
-    message: str
-    role: RoleEnum
-
-    class Config:
-        from_attributes = True
