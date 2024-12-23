@@ -83,3 +83,7 @@
 
 2. **Testing:**
    - Perform comprehensive testing of the endpoints, including edge cases and error scenarios.
+
+## End-Points
+
+[![firefox-b-J5-H3-Rt-ZD7.png](https://i.postimg.cc/PxvMnfqJ/firefox-b-J5-H3-Rt-ZD7.png)](https://postimg.cc/ftZdxNmQ)
