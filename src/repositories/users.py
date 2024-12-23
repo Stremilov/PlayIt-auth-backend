@@ -38,17 +38,6 @@ class UsersRepository:
         all_users = [user.to_read_model() for user in result.scalars().all()]  # List of UserSchemas
         return all_users
 
-    # TODO: I can use abstractions such as **filter_by for every non default GET
-
-    def get_by_telegram_id(self, telegram_id: int) -> Optional[UserSchema]:
-        statement = select(self.model).filter_by(telegram_id=telegram_id)
-        result = self.session.execute(statement)
-
-        user = result.scalar_one_or_none()
-        if not user:
-            return None
-        return user.to_read_model()
-
     def edit_one(self, user_id: int, data: dict) -> int:
         statement = update(self.model).values(**data).filter_by(id=user_id).returning(self.model.id)
         result = self.session.execute(statement)
@@ -65,12 +54,11 @@ class UsersRepository:
         deleted_user_id = result.scalar_one()
         return deleted_user_id
 
-    def get_role_by_username(self, username: str) -> Optional[RoleEnum]:
-        statement = select(self.model.role).where(self.model.username == username)
+    def get_one_by_filter(self, **filter_by):
+        statement = select(self.model).filter_by(**filter_by)
         result = self.session.execute(statement)
 
-        role = result.scalar_one_or_none()
-        if role:
-            return RoleEnum(role)
-        return None
-
+        user = result.scalar_one_or_none()
+        if not user:
+            return None
+        return user.to_read_model()
