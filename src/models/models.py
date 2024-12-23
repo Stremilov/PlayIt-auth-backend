@@ -16,7 +16,6 @@ class CustomUser(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(150), unique=True, nullable=False)
     password = Column(String(128), nullable=False)
-    # email = Column(String(254), unique=True, nullable=False)
     telegram_id = Column(Integer, unique=True, nullable=True)
     role = Column(Enum(RoleEnum), default=RoleEnum.USER, nullable=False)
     tasks = relationship("Task", back_populates="user", cascade="all, delete-orphan")
@@ -26,7 +25,6 @@ class CustomUser(Base):
             id=self.id,
             username=self.username,
             password=self.password,
-            # email=self.email,
             telegram_id=self.telegram_id,
             role=self.role
         )
