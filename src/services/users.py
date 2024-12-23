@@ -6,8 +6,6 @@ from src.schemas.users import (
     UserSchema
 )
 
-from src.utils.enums import RoleEnum
-
 
 class UsersService:
     def __init__(self, users_repo):
@@ -27,12 +25,12 @@ class UsersService:
         return all_users
 
     def get_user_by_telegram_id(self, telegram_id: int) -> Optional[UserSchema]:
-        user = self.users_repo.get_by_telegram_id(telegram_id)
+        user = self.users_repo.get_one_by_filter(telegram_id=telegram_id)
         return user
 
-    def get_user_role_by_username(self, username: str) -> Optional[RoleEnum]:
-        role = self.users_repo.get_role_by_username(username)
-        return role
+    def get_user_by_username(self, username: str) -> Optional[UserSchema]:
+        user = self.users_repo.get_one_by_filter(username=username)
+        return user
 
     def update_user_by_user_id(self, user_id: int, user: UserUpdateSchema) -> Optional[UserSchema]:
         # TODO: add check for user existance logic
