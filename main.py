@@ -7,9 +7,10 @@ from fastapi import FastAPI
 from src.db.db import init_db
 from src.api.routers import all_routers
 
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
+# logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
+# TODO логировать только уровень error+ (error, critical)
 
-app = FastAPI()
+app = FastAPI(openapi_prefix="/playit")
 
 for router in all_routers:
     app.include_router(router)

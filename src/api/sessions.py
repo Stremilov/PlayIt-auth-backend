@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Response, HTTPException
 from typing import Annotated
-from uuid import UUID, uuid4
+from uuid import UUID
 from src.schemas.sessions import (
     SessionData,
     GetUserRoleResponse
@@ -8,7 +8,7 @@ from src.schemas.sessions import (
 from src.sessions.backend import backend, cookie
 from src.sessions.verifier import verifier
 
-from src.services.users import UsersService
+from src.services.users import UserService
 from src.api.dependencies import users_service
 
 
@@ -16,17 +16,6 @@ router = APIRouter(
     prefix="/sessions",
     tags=["Sessions"]
 )
-
-
-@router.post("/create_session/{name}")
-async def create_session(name: str, response: Response):
-    session = uuid4()
-    data = SessionData(username=name)
-
-    await backend.create(session, data)
-    cookie.attach_to_response(response, session)
-
-    return f"created session for {name}"
 
 
 @router.get("/whoami", dependencies=[Depends(cookie)])
@@ -43,7 +32,7 @@ async def del_session(response: Response, session_id: UUID = Depends(cookie)):
 
 @router.get("/role", dependencies=[Depends(cookie)], response_model=GetUserRoleResponse)
 async def get_user_role(
-        service: Annotated[UsersService, Depends(users_service)],
+        service: Annotated[UserService, Depends(users_service)],
         session_data: SessionData = Depends(verifier)
 ):
     user = service.get_user_by_username(session_data.username)
