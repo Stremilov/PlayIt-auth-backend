@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Depends, Response, HTTPException
-from typing import Annotated
+from fastapi import APIRouter, Depends, Response
+from sqlalchemy.orm import Session
 from uuid import UUID
+
+from src.db.db import get_db_session
 from src.schemas.sessions import (
     SessionData,
     GetUserRoleResponse
 )
 from src.sessions.backend import backend, cookie
 from src.sessions.verifier import verifier
-
 from src.services.users import UserService
-from src.api.dependencies import users_service
-
+from src.api.responses import sessions_role_responses
+from src.utils.enums import RoleEnum
 
 router = APIRouter(
     prefix="/sessions",
@@ -20,6 +21,7 @@ router = APIRouter(
 
 @router.get("/whoami", dependencies=[Depends(cookie)])
 async def whoami(session_data: SessionData = Depends(verifier)):
+    print(session_data)
     return session_data
 
 
@@ -30,18 +32,23 @@ async def del_session(response: Response, session_id: UUID = Depends(cookie)):
     return "deleted session"
 
 
-@router.get("/role", dependencies=[Depends(cookie)], response_model=GetUserRoleResponse)
+@router.get(
+    path="/role",
+    dependencies=[Depends(cookie)],
+    response_model=GetUserRoleResponse,
+    summary="Получить роль пользователя",
+    description="""
+    Возвращает роль текущего пользователя.
+
+    - Использует данные текущей сессии.
+    - Если пользователь найден, возвращает роль.
+    - Если пользователь не найден, возвращает сообщение об ошибке.
+    """,
+    responses=sessions_role_responses
+)
 async def get_user_role(
-        service: Annotated[UserService, Depends(users_service)],
+        session: Session = Depends(get_db_session),
         session_data: SessionData = Depends(verifier)
 ):
-    user = service.get_user_by_username(session_data.username)
-    users_role = user.role
-    # TODO: Raise HTTPExceptions in services, not in end-points?
-    if users_role is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return GetUserRoleResponse(
-        status="success",
-        message="User's role retrieved",
-        role=users_role
-    )
+    return await UserService.user_role(session=session, session_data=session_data)
+
