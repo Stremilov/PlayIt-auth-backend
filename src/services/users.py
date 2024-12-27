@@ -1,77 +1,127 @@
-from typing import List, Optional
+from typing import Optional, Union
 
 from fastapi import HTTPException
 from fastapi import Response
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+
+from psycopg2.errors import UniqueViolation  # Оно есть, но Pycharm подчёркивает красным у меня о.О?
 
 from src.repositories.users import UserRepository
 from src.schemas.users import (
     UserCreateSchema,
-    UserUpdateSchema,
-    UserSchema, TelegramLoginResponse
+    TelegramLoginResponse
 )
+from src.schemas.sessions import (
+    GetUserRoleResponse,
+    SessionData
+)
+
 from src.utils.auth import login
+from src.utils.enums import RoleEnum
 
 
 class UserService:
-
     @staticmethod
-    async def auth_user(session: Session, response: Response, user):
-        try:
-            existing_user = UserRepository.get_user_by_username(user.username)
-            if existing_user:  # If existing user is not none
-                try:
-                    await login(response, user.username)
-                    return TelegramLoginResponse(
-                        status="success",
-                        message="Logged in",
-                        user=existing_user  # TODO убрать возврат юзера. Оно нам пока не надо
-                    )
-                except:
-                    raise HTTPException(status_code=400, detail="Неверные данные для выполнения запроса")
+    async def auth_user(
+            session: Session,
+            response: Response,
+            user: UserCreateSchema
+    ) -> Optional[TelegramLoginResponse]:
+        """
+        Основной метод аутентификации пользователя:
+        - Если пользователь существует, выполняется логин.
+        - Если пользователь не существует, создаётся новый пользователь, а затем выполняется логин.
+        """
 
-            created_user = UserRepository.create_user(session, user)
-            try:
-                await login(response, user.username)
+        # Так как довольно часто используем тут user.username решил вывести её в отдельную переменную
+        username = user.username
+
+        try:
+            # Проверка существует ли пользователь
+            existing_user = UserRepository.get_user_by_username(session=session, username=username)
+            if existing_user:  # Если пользователь существует
+                # Если пользователь существует, выполняем логин
+                await UserService._login_user(response=response, username=username)
                 return TelegramLoginResponse(
                     status="success",
-                    message="Registered and logged in",
-                    user=created_user  # TODO убрать возврат юзера. Оно нам пока не надо
+                    message="Logged in"
                 )
-            except:
-                raise HTTPException(status_code=400, detail="Неверные данные для выполнения запроса")
-        except:
-            raise HTTPException(status_code=500, detail="Внутренняя ошибка")
 
-    #         pass
-    #
-    # def create_user(self, user: UserCreateSchema) -> UserSchema:
-    #     users_dict = user.model_dump()
-    #     created_user = self.users_repo.create_one(users_dict)
-    #     return created_user
-    #
-    # def get_user_by_user_id(self, user_id: int) -> Optional[UserSchema]:
-    #     user = self.users_repo.get_by_user_id(user_id)
-    #     return user
-    #
-    # def get_all_users(self) -> List[UserSchema]:
-    #     all_users = self.users_repo.get_all()
-    #     return all_users
-    #
-    # def get_user_by_telegram_id(self, telegram_id: int) -> Optional[UserSchema]:
-    #     user = self.users_repo.get_one_by_filter(telegram_id=telegram_id)
-    #     return user
-    #
-    # def get_user_by_username(self, username: str) -> Optional[UserSchema]:
-    #     user = self.users_repo.get_one_by_filter(username=username)
-    #     return user
-    #
-    # def update_user_by_user_id(self, user_id: int, user: UserUpdateSchema) -> Optional[UserSchema]:
-    #     # TODO: add check for user existance logic
-    #
-    #     updated_user = self.users_repo.edit_one(user_id, user)
-    #     return updated_user
-    #
-    # def delete_user_by_user_id(self, user_id: int) -> int:
-    #     deleted_user_id = self.users_repo.delete_one(user_id)
-    #     return deleted_user_id
+            # Если пользователь не существует, то создаём его
+            users_dict = user.model_dump()  # Перевожу UserCreateSchema в dict
+            created_user = UserRepository.create_user(session=session, data=users_dict)
+
+            # Логин для нового пользователя
+            await UserService._login_user(response=response, username=username)
+            return TelegramLoginResponse(
+                status="success",
+                message="Registered and logged in"
+            )
+
+        except IntegrityError as e:
+            # Проверяю, связана ли ошибка с уникальностью telegram_id
+            # Не проверяю связана ли с username'ом, так как ранее делал проверку существует ли пользователь
+            if isinstance(e.orig, UniqueViolation):
+                raise HTTPException(
+                    status_code=409,
+                    detail="Пользователь с таким telegram_id уже существует"
+                )
+
+        except Exception as e:
+            # Ловлю любые неожиданные ошибки
+            raise HTTPException(
+                status_code=500,
+                detail=f"Внутренняя ошибка базы данных: {type(e)}"
+                # Решил не выводить здесь с помощью str(e) полностью ошибку, так как она раскрывает все поля
+                # базы данных, думаю так безопаснее
+            )
+
+    @staticmethod
+    async def _login_user(response: Response, username: str) -> None:
+        """Защищённый метод для логина пользователя"""
+        try:
+            await login(response=response, name=username)
+        except ValueError as e:
+            # Если придут ошибки при авторизации в src/utils/auth
+            raise HTTPException(
+                status_code=400,
+                detail=f"Ошибка авторизации: {str(e)}"
+            )
+
+        except Exception as e:
+            # Для неожиданных ошибок
+            raise HTTPException(
+                status_code=500,
+                detail=f"Внутренняя ошибка при авторизации: {str(e)}"
+            )
+
+    @staticmethod
+    async def user_role(
+            session: Session,
+            session_data: SessionData
+    ) -> GetUserRoleResponse:
+        try:
+            username = session_data.username
+            existing_user = UserRepository.get_user_by_username(session=session, username=username)
+            if existing_user:  # Если пользователь существует
+                # Если пользователь существует, отдаём роль
+                return GetUserRoleResponse(
+                    status="success",
+                    message=f"Роль пользователя: '{username}' получена",
+                    role=RoleEnum(existing_user.role)
+                )
+            # Если пользователь не найден, отдаю 404
+            raise HTTPException(
+                status_code=404,
+                detail={
+                    "status": "failed",
+                    "message": f"Пользователь с именем: '{username}' не существует"
+                }
+            )
+        except Exception as e:
+            print(e)
+            raise HTTPException(
+                status_code=500,
+                detail=f"Внутренняя ошибка сервера: {str(e)}"
+            )
