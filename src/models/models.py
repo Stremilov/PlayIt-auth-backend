@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, Enum
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declared_attr
 from datetime import datetime
 
 from src.db.db import Base
@@ -15,7 +14,6 @@ class CustomUser(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(150), unique=True, nullable=False)
-    password = Column(String(128), nullable=False) #TODO убрать пароль, потому что у нас его в принципе нету
     telegram_id = Column(Integer, unique=True, nullable=True)
     role = Column(Enum(RoleEnum), default=RoleEnum.USER, nullable=False)
     tasks = relationship("Task", back_populates="user", cascade="all, delete-orphan")
@@ -24,7 +22,6 @@ class CustomUser(Base):
         return UserSchema(
             id=self.id,
             username=self.username,
-            password=self.password, #TODO убрать пароль, потому что у нас его в принципе нету
             telegram_id=self.telegram_id,
             role=self.role
         )
