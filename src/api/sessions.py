@@ -42,7 +42,7 @@ async def del_session(response: Response, session_id: UUID = Depends(cookie)):
 
     - Использует данные текущей сессии.
     - Если пользователь найден, возвращает роль.
-    - Если пользователь не найден, возвращает сообщение об ошибке.
+    - Если пользователь не найден, возвращает 404.
     """,
     responses=sessions_role_responses
 )
