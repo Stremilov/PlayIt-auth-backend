@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:15
+    container_name: playit-db
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: always
+    container_name: playit-auth-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+# Volumes нужны, чтобы значения сохранялись вне зависимости от удаления либо рестарта контейнера
+volumes:
+  postgres_data:
