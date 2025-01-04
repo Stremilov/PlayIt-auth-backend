@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from src.db.db import init_db
 from src.api.routers import all_routers
 
+
 # Логирую только уровень error+ (error, critical)
 logging.basicConfig(
     level=logging.ERROR,
@@ -14,7 +15,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("app_logger")
 
-app = FastAPI(root_path="/playit")  # Тут был устаревший openapi_prefix, поменял на root_path
+app = FastAPI(root_path="/playit/auth")
 
 for router in all_routers:
     app.include_router(router)
