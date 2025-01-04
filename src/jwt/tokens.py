@@ -12,7 +12,7 @@ def create_jwt_token(username: str, telegram_id: int) -> str:
         payload = {
             "sub": username,
             "telegram_id": telegram_id,
-            "aud": "test",  # fastapi-users.jwt требует дополнительный аргумент audience
+            "aud": "prod",  # fastapi-users.jwt требует дополнительный аргумент audience
             "exp": datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
         }
         return generate_jwt(payload, SECRET_KEY)
@@ -25,7 +25,7 @@ def verify_jwt_token(token: str) -> dict:
     Синхронно декодирует и проверяет JWT-токен.
     """
     try:
-        audience = "test"  # Должно совпадать с "aud" в create_jwt_token
+        audience = "prod"  # Должно совпадать с "aud" в create_jwt_token
         return decode_jwt(token, SECRET_KEY, audience)
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Невалидный токен: {str(e)}")
