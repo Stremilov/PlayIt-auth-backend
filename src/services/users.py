@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
 from fastapi import Response
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -10,15 +10,16 @@ from psycopg2.errors import UniqueViolation  # Оно есть, но Pycharm п�
 from src.repositories.users import UserRepository
 from src.schemas.users import (
     UserCreateSchema,
-    TelegramLoginResponse
-)
-from src.schemas.sessions import (
-    GetUserRoleResponse,
-    SessionData
+    TelegramLoginResponse,
+    WhoamiResponse
 )
 
-from src.utils.auth import login
 from src.utils.enums import RoleEnum
+
+from src.jwt.tokens import (
+    create_jwt_token,
+    verify_jwt_token
+)
 
 
 class UserService:
@@ -27,33 +28,28 @@ class UserService:
             session: Session,
             response: Response,
             user: UserCreateSchema
-    ) -> Optional[TelegramLoginResponse]:
+    ):
         """
         Основной метод аутентификации пользователя:
-        - Если пользователь существует, выполняется логин.
-        - Если пользователь не существует, создаётся новый пользователь, а затем выполняется логин.
+        - Если пользователь существует, создаётся JWT-токен.
+        - Если пользователь не существует, создаётся новый пользователь, а затем создаётся JWT-токен.
         """
-
-        # Так как довольно часто используем тут user.username решил вывести её в отдельную переменную
         username = user.username
-
+        telegram_id = user.telegram_id
+        token = create_jwt_token(username, telegram_id)
         try:
-            # Проверка существует ли пользователь
             existing_user = UserRepository.get_user_by_username(session=session, username=username)
-            if existing_user:  # Если пользователь существует
-                # Если пользователь существует, выполняем логин
-                await UserService._login_user(response=response, username=username)
+            if existing_user:
+                response.set_cookie(key="jwt-token", value=token, httponly=True)
                 return TelegramLoginResponse(
                     status="success",
                     message="Logged in"
                 )
 
-            # Если пользователь не существует, то создаём его
-            users_dict = user.model_dump()  # Перевожу UserCreateSchema в dict
-            created_user = UserRepository.create_user(session=session, data=users_dict)
+            users_dict = user.model_dump()
+            new_user = UserRepository.create_user(session=session, data=users_dict)
 
-            # Логин для нового пользователя
-            await UserService._login_user(response=response, username=username)
+            response.set_cookie(key="jwt-token", value=token, httponly=True)
             return TelegramLoginResponse(
                 status="success",
                 message="Registered and logged in"
@@ -72,56 +68,41 @@ class UserService:
             # Ловлю любые неожиданные ошибки
             raise HTTPException(
                 status_code=500,
-                detail=f"Внутренняя ошибка базы данных: {type(e)}"
+                detail=f"Внутренняя ошибка базы данных: {e}"
                 # Решил не выводить здесь с помощью str(e) полностью ошибку, так как она раскрывает все поля
                 # базы данных, думаю так безопаснее
             )
 
     @staticmethod
-    async def _login_user(response: Response, username: str) -> None:
-        """Защищённый метод для логина пользователя"""
-        try:
-            await login(response=response, name=username)
-        except ValueError as e:
-            # Если придут ошибки при авторизации в src/utils/auth
-            raise HTTPException(
-                status_code=400,
-                detail=f"Ошибка авторизации: {str(e)}"
-            )
+    async def whoami(
+            request: Request,
+            session: Session
+    ) -> WhoamiResponse:
 
-        except Exception as e:
-            # Для неожиданных ошибок
-            raise HTTPException(
-                status_code=500,
-                detail=f"Внутренняя ошибка при авторизации: {str(e)}"
-            )
-
-    @staticmethod
-    async def user_role(
-            session: Session,
-            session_data: SessionData
-    ) -> GetUserRoleResponse:
+        """
+        Получает информацию о пользователе на основе JWT-токена.
+        """
         try:
-            username = session_data.username
-            existing_user = UserRepository.get_user_by_username(session=session, username=username)
-            if existing_user:  # Если пользователь существует
-                # Если пользователь существует, отдаём роль
-                return GetUserRoleResponse(
-                    status="success",
-                    message=f"Роль пользователя: '{username}' получена",
-                    role=RoleEnum(existing_user.role)
-                )
-            # Если пользователь не найден, отдаю 404
-            raise HTTPException(
-                status_code=404,
-                detail={
-                    "status": "failed",
-                    "message": f"Пользователь с именем: '{username}' не существует"
-                }
+            token = request.cookies.get("jwt-token")
+            if not token:
+                raise HTTPException(status_code=401, detail="Не авторизован")
+
+            verified_token = verify_jwt_token(token)
+
+            username = verified_token.get("sub")
+            user = UserRepository.get_user_by_username(session=session, username=username)
+
+            if not user:
+                raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+            return WhoamiResponse(
+                status="success",
+                message="Пользователь по этому jwt-токену найден.",
+                user=user
             )
         except Exception as e:
-            print(e)
+            # Ловлю любые неожиданные ошибки
             raise HTTPException(
                 status_code=500,
-                detail=f"Внутренняя ошибка сервера: {str(e)}"
+                detail=f"Произошла непредвиденная ошибка: {e}"
             )
