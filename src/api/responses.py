@@ -75,19 +75,42 @@ telegram_login_responses = {
         }
     },
 }
-# Для эндпоинта /sessions/role в src/api/sessions
-sessions_role_responses = {
+# Для эндпоинта /users/whoami в src.api.whoami
+whoami_responses = {
     200: {
-        "description": "Роль пользователя успешно получена",
+        "description": "Успешный запрос",
         "content": {
             "application/json": {
                 "examples": {
-                    "success": {
-                        "summary": "Роль получена",
+                    "user_found": {
+                        "summary": "Пользователь найден",
                         "value": {
                             "status": "success",
-                            "message": "Роль пользователя: 'test_user' получена",
-                            "role": "admin"
+                            "message": "Пользователь по этому jwt-токену найден.",
+                            "user": {
+                                "id": 1,
+                                "username": "example_user",
+                                "telegram_id": 123456789,
+                                "balance": 100,
+                                "role": "USER",
+                                "done_tasks": 10,
+                                "group_number": "1A"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    401: {
+        "description": "Пользователь не авторизован",
+        "content": {
+            "application/json": {
+                "examples": {
+                    "not_authorized": {
+                        "summary": "JWT-токен отсутствует или невалиден",
+                        "value": {
+                            "detail": "Не авторизован"
                         }
                     }
                 }
@@ -99,11 +122,10 @@ sessions_role_responses = {
         "content": {
             "application/json": {
                 "examples": {
-                    "not_found": {
-                        "summary": "Пользователь отсутствует",
+                    "user_not_found": {
+                        "summary": "Пользователь не найден в базе данных",
                         "value": {
-                            "status": "failed",
-                            "message": "Пользователь с именем: 'test_user' не существует"
+                            "detail": "Пользователь не найден"
                         }
                     }
                 }
@@ -115,10 +137,10 @@ sessions_role_responses = {
         "content": {
             "application/json": {
                 "examples": {
-                    "server_error": {
-                        "summary": "Ошибка сервера",
+                    "unexpected_error": {
+                        "summary": "Неожиданная ошибка",
                         "value": {
-                            "detail": "Внутренняя ошибка сервера: <тип ошибки>"
+                            "detail": "Произошла непредвиденная ошибка: <тип ошибки>"
                         }
                     }
                 }
