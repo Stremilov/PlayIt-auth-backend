@@ -18,9 +18,9 @@ class Base(DeclarativeBase):
 
 def init_db():
     with engine.begin() as conn:
-        logging.info("Creating tables POSTGRESQL!")
+        logging.info("Создаю таблицы POSTGRESQL!")
         Base.metadata.create_all(bind=conn)
-    logging.info("Tables created!")
+    logging.info("Таблицы созданы!")
 
 
 # Synchronous sessions generator
