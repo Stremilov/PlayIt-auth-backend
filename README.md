@@ -1,36 +1,30 @@
 
 # PlayIT dev branch
 
-## How to start the Project
+## Как запустить проект с помощью Docker
 
-1. **Clone the Repository:**
+1. **Клонируйте репозиторий:**
    ```bash
-   git clone <repository_url>
-   cd <project_directory>
+   git clone <https://github.com/Stremilov/PlayIt-auth-backend.git>
+   cd <PlayIt-auth-backend.git>
    ```
 
-2. **Set Up a Virtual Environment:**
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
-
-3. **Create and Configure `.env`:**
-   - Copy the contents of `example.env` to a new file named `.env`:
+2. **Создайте файл `.env`:**
+   - Скопируйте содержимое файла `example.env` в новый файл с именем `.env`:
      ```bash
      cp example.env .env
      ```
-   - Fill in the required values in `.env` (e.g., database credentials).
+   - Поменяйте значения там на другие, которые нужны вам. ОБЯЗАТЕЛЬНО СМЕНИТЕ ПАРОЛЬ В **.env** и **docker-compose.yml** файлах!
 
-4. **Install Dependencies:**
+3. **Запустите Docker Compose:**
    ```bash
-   pip install -r requirements.txt
+   docker-compose up --build
    ```
 
-5. **Run the Application:**
-   ```bash
-   cd src
-   python main.py
+4. **Проверьте доступность приложения:**
+   - Приложение будет доступно по адресу: [http://localhost:8000](http://localhost:8000).
+   - Документация API: [http://localhost:8000/docs](http://localhost:8000/docs).
+
 ---
 
 ## End-Points
