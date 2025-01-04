@@ -2,14 +2,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import insert, select
 from typing import Optional
 
-from src.models.models import CustomUser
+from src.models.models import Users
 from src.schemas.users import UserSchema
 
 
 class UserRepository:
     @staticmethod
     def create_user(session: Session, data: dict) -> UserSchema:
-        statement = insert(CustomUser).values(**data).returning(CustomUser)
+        statement = insert(Users).values(**data).returning(Users)
         result = session.execute(statement)
         session.commit()
 
@@ -19,7 +19,7 @@ class UserRepository:
 
     @staticmethod
     def get_user_by_username(session: Session, username: str) -> Optional[UserSchema]:
-        statement = select(CustomUser).filter_by(username=username)
+        statement = select(Users).filter_by(username=username)
         result = session.execute(statement)
 
         user = result.scalar_one_or_none()
