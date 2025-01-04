@@ -1,5 +1,6 @@
 from src.models.models import (
-    CustomUser,
-    Task
+    Users,
+    Tasks,
+    Transactions
 )
 # Импорт нужен для того, чтобы в БД таблицы создались
