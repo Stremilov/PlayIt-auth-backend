@@ -35,4 +35,4 @@
 
 ## End-Points
 
-[![image.png](https://i.postimg.cc/4yXJSXmm/image.png)](https://postimg.cc/CB6TZTCg)
+[![image.png](https://i.postimg.cc/W4VvRrc1/image.png)](https://postimg.cc/DSxDLSz9)
