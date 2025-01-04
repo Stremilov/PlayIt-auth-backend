@@ -21,10 +21,11 @@ for router in all_routers:
 
 
 async def main():
-    logging.info("Starting init_db()")
+    logging.info("Инициализирую базу данных")
     init_db()
-    logging.info("Starting FastAPI app")
-    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+
+    logging.info("База данных инициализирована")
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
 
 
 if __name__ == "__main__":
