@@ -13,7 +13,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger("auth_logger")
+logging.getLogger("auth_logger")
 
 app = FastAPI(root_path="/playit/auth")
 
