@@ -4,7 +4,7 @@ from src.utils.config import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
 import logging
 
 # Database configuration for connection
-DATABASE_URL = f"postgresql://postgres:sdgdfs13@database:5432/playit"
+DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 engine = create_engine(DATABASE_URL)
 
