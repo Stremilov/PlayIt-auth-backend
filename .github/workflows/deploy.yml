@@ -9,20 +9,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Reading credentials
-      run: |
-        sudo apt-get update
+      - name: Deploy
       env:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
         SSH_HOST: ${{ secrets.SERVER_HOST }}
         SSH_USERNAME: ${{ secrets.DEPLOY_USER }}
-    - name: Debug SSH connection
-      run : | 
-        echo "Host: ${{ secrets.SERVER_HOST }}"
-        echo "User: ${{ secrets.DEPLOY_USER }}"
-        echo "Password: ${{ secrets.SSH_PASSWORD }}" | wc -c
-        ping -c 4 ${{ secrets.SERVER_HOST }}
-    - name: Deploying code
       run: |
         sudo apt-get update
         sudo apt-get install -y sshpass
