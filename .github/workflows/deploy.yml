@@ -21,5 +21,6 @@ jobs:
           cd ~/playit/PlayIt-auth-backend
           git pull
           docker compose -f docker-compose.yml down || true
+          docker compose build --no-cache
           docker compose -f docker-compose.yml up -d || true
         '
