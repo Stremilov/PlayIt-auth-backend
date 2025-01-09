@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="Тестово добавил логи в локи" />
+    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="Фиксы (надеюсь финальные)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -201,7 +201,31 @@
       <option name="project" value="LOCAL" />
       <updated>1736456712646</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Фиксы">
+      <option name="closed" value="true" />
+      <created>1736457025328</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1736457025328</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Фиксы">
+      <option name="closed" value="true" />
+      <created>1736457395943</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736457395943</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Фиксы (надеюсь финальные)">
+      <option name="closed" value="true" />
+      <created>1736458032656</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736458032656</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -220,6 +244,8 @@
     <MESSAGE value="fixes" />
     <MESSAGE value="Изменения:&#10;- Добавлена ручка для изменения баланса пользователя&#10;- Небольшой рефакторинг (вынес декодирование jwt в отдельную функцию)&#10;- Исправил баг со схемой в эндпоинте /telegram-login" />
     <MESSAGE value="Тестово добавил логи в локи" />
-    <option name="LAST_COMMIT_MESSAGE" value="Тестово добавил логи в локи" />
+    <MESSAGE value="Фиксы" />
+    <MESSAGE value="Фиксы (надеюсь финальные)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Фиксы (надеюсь финальные)" />
   </component>
 </project>
