@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:15
-    container_name: playit-db
+    container_name: db
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
