@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Reading credentials
+      run: |
+        sudo apt-get update
       env:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
         SSH_HOST: ${{ secrets.SERVER_HOST }}
