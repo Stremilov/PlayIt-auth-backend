@@ -41,7 +41,7 @@ class Users(Base):
     balance = Column(Integer, default=0, nullable=False)
     role = Column(Enum(RoleEnum), default=RoleEnum.USER, nullable=False)
     done_tasks = Column(Integer, default=0, nullable=False)
-    group_number = Column(String, nullable=False)
+    group_number = Column(String, default="", nullable=False)
 
     tasks = relationship("Tasks", back_populates="users", cascade="all, delete-orphan")
 

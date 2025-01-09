@@ -11,8 +11,9 @@ from src.repositories.users import UserRepository
 from src.schemas.users import (
     UserCreateSchema,
     TelegramLoginResponse,
-    WhoamiResponse
+    WhoamiResponse, UpdateUserBalanceResponse
 )
+from src.utils.auth import verify_user_by_jwt
 
 from src.utils.enums import RoleEnum
 
@@ -74,7 +75,7 @@ class UserService:
             )
 
     @staticmethod
-    async def whoami(
+    async def get_user_info(
             request: Request,
             session: Session
     ) -> WhoamiResponse:
@@ -83,15 +84,7 @@ class UserService:
         Получает информацию о пользователе на основе JWT-токена.
         """
         try:
-            token = request.cookies.get("jwt-token")
-            if not token:
-                raise HTTPException(status_code=401, detail="Не авторизован")
-
-            verified_token = verify_jwt_token(token)
-
-            username = verified_token.get("sub")
-            user = UserRepository.get_user_by_username(session=session, username=username)
-
+            user = await verify_user_by_jwt(request, session)
             if not user:
                 raise HTTPException(status_code=404, detail="Пользователь не найден")
 
@@ -101,7 +94,33 @@ class UserService:
                 user=user
             )
         except Exception as e:
-            # Ловлю любые неожиданные ошибки
+            raise HTTPException(
+                status_code=500,
+                detail=f"Произошла непредвиденная ошибка: {e}"
+            )
+
+    @staticmethod
+    async def manage_user_balance(
+            request: Request,
+            session: Session,
+            value: int
+    ) -> UpdateUserBalanceResponse:
+        """
+        Получает значение и изменяет баланс пользователя на это значение
+        """
+        try:
+            user = await verify_user_by_jwt(request, session)
+            if not user:
+                raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+            user = UserRepository.update_user_balance(session, user.username, value)
+
+            return UpdateUserBalanceResponse(
+                status="success",
+                message="Баланс пользователя успешно обновлен",
+                user=user
+            )
+        except Exception as e:
             raise HTTPException(
                 status_code=500,
                 detail=f"Произошла непредвиденная ошибка: {e}"

@@ -40,7 +40,15 @@ class TelegramLoginResponse(BaseModel):
         from_attributes = True
 
 
-class WhoamiResponse(BaseModel):
+class BaseResponseModel(BaseModel):
     status: str
     message: str
     user: UserSchema
+
+
+class WhoamiResponse(BaseResponseModel):
+    pass
+
+
+class UpdateUserBalanceResponse(BaseResponseModel):
+    pass
