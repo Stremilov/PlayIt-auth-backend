@@ -17,7 +17,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y sshpass
-        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$SSH_HOST '
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$SSH_HOST 
+        '
           cd ~/plait/PlayIt-auth-backend
           git pull
           docker compose -f docker-compose.yml down || true
