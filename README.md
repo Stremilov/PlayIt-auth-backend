@@ -2,7 +2,7 @@
 # PlayIT dev branch
 
 ## Использованные технологии
-```bash
+```
 - Python
 - FastAPI
 - FastAPI Users
