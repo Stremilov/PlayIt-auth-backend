@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="Откат">
+    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="Фиксы локи">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/responses.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/responses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repositories/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repositories/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schemas/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/users.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -244,7 +250,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736459256098</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Фиксы локи">
+      <option name="closed" value="true" />
+      <created>1736460125313</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1736460125313</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -266,6 +280,7 @@
     <MESSAGE value="Фиксы" />
     <MESSAGE value="Фиксы (надеюсь финальные)" />
     <MESSAGE value="Откат" />
-    <option name="LAST_COMMIT_MESSAGE" value="Откат" />
+    <MESSAGE value="Фиксы локи" />
+    <option name="LAST_COMMIT_MESSAGE" value="Фиксы локи" />
   </component>
 </project>
