@@ -1,6 +1,20 @@
 
 # PlayIT dev branch
 
+## Использованные технологии
+```bash
+- Python
+- FastAPI
+- FastAPI Users
+- Sqlalchemy
+- PostgreSQL
+- Docker
+- Grafana
+- Loki
+- Prometheus
+- GitHub Actions
+```
+
 ## Как запустить проект с помощью Docker
 
 1. **Клонируйте репозиторий:**
