@@ -39,8 +39,3 @@
    - Приложение будет доступно по адресу: [http://localhost:8000](http://localhost:8000).
    - Документация API: [http://localhost:8000/docs](http://localhost:8000/docs).
 
----
-
-## End-Points
-
-[![image.png](https://i.postimg.cc/W4VvRrc1/image.png)](https://postimg.cc/DSxDLSz9)
