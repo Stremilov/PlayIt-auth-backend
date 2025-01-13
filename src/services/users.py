@@ -90,6 +90,7 @@ class UserService:
                 message="Пользователь по этому jwt-токену найден.",
                 user=user
             )
+        # TODO: Выдавать 401, если токен недействителен, а не нагло перехватывать всё 500 статус кодом
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
