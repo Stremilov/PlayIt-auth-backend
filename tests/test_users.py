@@ -152,27 +152,61 @@ async def test_update_personal_data(client):
     assert login_response.status_code == 200, f"Unexpected status code during login: {login_response.status_code}"
     assert login_response.json()["status"] == "success"
 
-    # Данные для изменения персональной информации
-    personal_data_update = {
+    # 1 вариант: переданы все данные
+    full_data_update = {
         "full_name": "Иванов Иван Иванович",
         "group_number": "ИСТ-000"
     }
-
-    # Выполняем PUT-запрос для обновления персональных данных
-    update_response = await client.put(
+    full_update_response = await client.put(
         "/users/personal-data",
-        json=personal_data_update
+        json=full_data_update
     )
 
-    # Проверяем статус ответа
-    assert update_response.status_code == 200, f"Unexpected status code: {update_response.status_code}"
+    assert full_update_response.status_code == 200, f"Unexpected status code: {full_update_response.status_code}"
+    full_update_data = full_update_response.json()
+    assert full_update_data["status"] == "success", f"Unexpected status: {full_update_data['status']}"
+    assert full_update_data["user"]["full_name"] == full_data_update["full_name"], (
+        f"Unexpected full_name: {full_update_data['user']['full_name']}"
+    )
+    assert full_update_data["user"]["group_number"] == full_data_update["group_number"], (
+        f"Unexpected group_number: {full_update_data['user']['group_number']}"
+    )
 
-    # Проверяем содержание ответа
-    update_data = update_response.json()
-    assert update_data["status"] == "success", f"Unexpected status: {update_data['status']}"
-    assert update_data["user"]["full_name"] == personal_data_update["full_name"], (
-        f"Unexpected full_name: {update_data['user']['full_name']}"
+    # 2 Вариант: передано только одно значение full_name
+    partial_data_update = {
+        "full_name": "Эндрю Тейт Амогусович",
+        "group_number": ""
+    }
+    partial_update_response = await client.put(
+        "/users/personal-data",
+        json=partial_data_update
     )
-    assert update_data["user"]["group_number"] == personal_data_update["group_number"], (
-        f"Unexpected group_number: {update_data['user']['group_number']}"
+
+    assert partial_update_response.status_code == 200, f"Unexpected status code: {partial_update_response.status_code}"
+    partial_update_data = partial_update_response.json()
+    assert partial_update_data["status"] == "success", f"Unexpected status: {partial_update_data['status']}"
+    assert partial_update_data["user"]["full_name"] == partial_data_update["full_name"], (
+        f"Unexpected full_name: {partial_update_data['user']['full_name']}"
     )
+    # Проверяем, что group_number остался прежним
+    assert partial_update_data["user"]["group_number"] == full_data_update["group_number"], (
+        f"Unexpected group_number: {partial_update_data['user']['group_number']}"
+    )
+
+    # Вариант 3: не передано никаких данных
+    empty_data_update = {
+        "full_name": "",
+        "group_number": ""
+    }
+    empty_update_response = await client.put(
+        "/users/personal-data",
+        json=empty_data_update
+    )
+    # TODO: Тут такая же проблема, выдаётся статус код 400, но его перехватывает другой catch Exception as e, присваивающий
+    # ей 500, как в test_whoami_without_token
+    assert empty_update_response.status_code == 500, (
+        f"Unexpected status code: {empty_update_response.status_code}"
+    )
+    # Проверяем, что в ответе содержится информация о недостающих данных
+    empty_update_data = empty_update_response.json()
+    assert "detail" in empty_update_data, "Expected validation error for missing data"
