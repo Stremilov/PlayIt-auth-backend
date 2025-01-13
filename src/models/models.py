@@ -37,11 +37,12 @@ class Users(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(150), unique=True, nullable=False)
+    full_name = Column(String, default="", nullable=False)
     telegram_id = Column(Integer, unique=True, nullable=True)
     balance = Column(Integer, default=0, nullable=False)
     role = Column(Enum(RoleEnum), default=RoleEnum.USER, nullable=False)
     done_tasks = Column(Integer, default=0, nullable=False)
-    group_number = Column(String, nullable=False)
+    group_number = Column(String, default="", nullable=False)
 
     tasks = relationship("Tasks", back_populates="users", cascade="all, delete-orphan")
 
@@ -49,6 +50,7 @@ class Users(Base):
         return UserSchema(
             id=self.id,
             username=self.username,
+            full_name=self.full_name,
             telegram_id=self.telegram_id,
             balance=self.balance,
             role=self.role,

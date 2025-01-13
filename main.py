@@ -3,16 +3,16 @@ import uvicorn
 import logging
 
 from fastapi import FastAPI
+# from logging_loki import LokiHandler
 
 from src.db.db import init_db
 from src.api.routers import all_routers
 
-# Логирую только уровень error+ (error, critical)
 logging.basicConfig(
-    level=logging.ERROR,
+    level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger("app_logger")
+logging.getLogger("auth_logger")
 
 app = FastAPI(root_path="/playit/auth")
 

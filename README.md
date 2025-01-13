@@ -1,6 +1,20 @@
 
 # PlayIT dev branch
 
+## Использованные технологии
+```
+- Python
+- FastAPI
+- FastAPI Users
+- Sqlalchemy
+- PostgreSQL
+- Docker
+- Grafana
+- Loki
+- Prometheus
+- GitHub Actions
+```
+
 ## Как запустить проект с помощью Docker
 
 1. **Клонируйте репозиторий:**
@@ -25,8 +39,16 @@
    - Приложение будет доступно по адресу: [http://localhost:8000](http://localhost:8000).
    - Документация API: [http://localhost:8000/docs](http://localhost:8000/docs).
 
----
 
-## End-Points
+## Как запустить тесты без Docker
+1. **Для проверки всех тестов, напишите в корневой папке проекта:**
+   ```bash
+   pytest
+   ```
+   [![image.png](https://i.postimg.cc/Y93f6fdb/image.png)](https://postimg.cc/0MzwxmRw)
 
-[![image.png](https://i.postimg.cc/W4VvRrc1/image.png)](https://postimg.cc/DSxDLSz9)
+2. **Для того, чтобы узнать какое покрытие тестами кода:**
+   ```bash
+   pytest --cov
+   ```
+   [![тесты.png](https://i.postimg.cc/g2CDm0wq/image.png)](https://postimg.cc/BjCDC4BX)

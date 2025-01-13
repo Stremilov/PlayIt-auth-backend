@@ -7,8 +7,6 @@ from src.utils.enums import RoleEnum
 class UserCreateSchema(BaseModel):
     username: str
     telegram_id: int
-    role: RoleEnum
-    group_number: str  # TODO: Нужно ли при создании сразу указывать номер группы или потом апдейтом дать?
 
 
 class UserUpdateSchema(BaseModel):
@@ -23,6 +21,7 @@ class UserUpdateSchema(BaseModel):
 class UserSchema(BaseModel):
     id: int
     username: str
+    full_name: str
     telegram_id: int
     balance: int
     role: RoleEnum
@@ -31,6 +30,11 @@ class UserSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UpdatePersonalDataSchema(BaseModel):
+    full_name: Optional[str]
+    group_number: Optional[str]
 
 
 # Output schemas for users end-points
@@ -42,7 +46,7 @@ class TelegramLoginResponse(BaseModel):
         from_attributes = True
 
 
-class WhoamiResponse(BaseModel):
+class BaseResponse(BaseModel):
     status: str
     message: str
     user: UserSchema
