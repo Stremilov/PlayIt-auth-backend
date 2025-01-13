@@ -3,11 +3,10 @@ import uvicorn
 import logging
 
 from fastapi import FastAPI
-from logging_loki import LokiHandler
+# from logging_loki import LokiHandler
 
 from src.db.db import init_db
 from src.api.routers import all_routers
-
 
 logging.basicConfig(
     level=logging.DEBUG,
