@@ -39,3 +39,16 @@
    - Приложение будет доступно по адресу: [http://localhost:8000](http://localhost:8000).
    - Документация API: [http://localhost:8000/docs](http://localhost:8000/docs).
 
+
+## Как запустить тесты без Docker
+1. **Для проверки всех тестов, напишите в корневой папке проекта:**
+   ```bash
+   pytest
+   ```
+   [![image.png](https://i.postimg.cc/Y93f6fdb/image.png)](https://postimg.cc/0MzwxmRw)
+
+2. **Для того, чтобы узнать какое покрытие тестами кода:**
+   ```bash
+   pytest --cov
+   ```
+   [![тесты.png](https://i.postimg.cc/g2CDm0wq/image.png)](https://postimg.cc/BjCDC4BX)
