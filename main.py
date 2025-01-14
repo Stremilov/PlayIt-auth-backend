@@ -8,6 +8,8 @@ from logging_loki import LokiHandler
 from src.db.db import init_db
 from src.api.routers import all_routers
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -16,6 +18,13 @@ logging.basicConfig(
 logging.getLogger("auth_logger")
 
 app = FastAPI(root_path="/playit/auth")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 for router in all_routers:
     app.include_router(router)
