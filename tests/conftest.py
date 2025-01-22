@@ -1,44 +1,60 @@
+import os
 import pytest
 import pytest_asyncio
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from httpx import AsyncClient
-from src.db.db import Base, get_db_session
-from main import app
-import os
+from httpx import AsyncClient, ASGITransport
 
-# Настройка тестовой базы данных
-DATABASE_URL = "postgresql://postgres:1234@localhost/test_db"  # Создайте БД с именем test_db в PGAdmin4 (Любой другой СУБД)
-# перед запуском тестов либо поменяйте тут параметры
+from main import app
+from src.db.db import Base, get_db_session
+
+
+# --- Загрузка переменных окружения (если нужно, то поменяйте в .env файле URL тестовой базы данных) ---
+load_dotenv()
+DATABASE_URL = os.getenv("TEST_DATABASE_URL", "postgresql://postgres:1234@localhost/test_db")
+
+# --- Создаём синхронный engine и sessionmaker для тестовой БД ---
 engine_test = create_engine(DATABASE_URL, future=True)
 TestSession = sessionmaker(bind=engine_test, expire_on_commit=False)
 
 
-# Фикстура для базы данных
 @pytest.fixture(autouse=True)
 def prepare_database():
-    """Подготовка тестовой базы данных перед каждым тестом."""
+    """
+    Перед каждым тестом дропаем все таблицы и создаём заново,
+    чтобы тесты были изолированными.
+    """
     Base.metadata.drop_all(bind=engine_test)
     Base.metadata.create_all(bind=engine_test)
     yield
     Base.metadata.drop_all(bind=engine_test)
 
 
-# Фикстура для замены зависимости get_db_session
 @pytest.fixture
 def override_get_db_session():
-    """Замена зависимости для получения сессии базы данных."""
+    """
+    Переопределяет зависимость get_db_session,
+    чтобы в тестах использовать тестовую (синхронную) БД.
+    """
 
     def _override():
         with TestSession() as session:
             yield session
 
+    # Устанавливаем переопределение
     app.dependency_overrides[get_db_session] = _override
 
+    # После завершения теста убираем переопределение, чтобы не протекало в другие тесты
+    yield
+    app.dependency_overrides.pop(get_db_session, None)
 
-# Фикстура для асинхронного клиента
+
 @pytest_asyncio.fixture
 async def client(override_get_db_session):
-    """Асинхронный клиент для тестирования."""
-    async with AsyncClient(base_url="http://localhost:8000") as ac:
+    """
+    Создаём асинхронный клиент для тестирования FastAPI-приложения.
+    Используем ASGITransport, чтобы тестировать эндпоинты в памяти (без реального http-сервера).
+    """
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
