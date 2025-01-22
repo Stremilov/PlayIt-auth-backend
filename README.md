@@ -45,10 +45,12 @@
    ```bash
    pytest
    ```
-   [![image.png](https://i.postimg.cc/Y93f6fdb/image.png)](https://postimg.cc/0MzwxmRw)
 
-2. **Для того, чтобы узнать какое покрытие тестами кода:**
+2. **Для того, чтобы узнать процент покрытия тестами кода:**
    ```bash
    pytest --cov
    ```
-   [![тесты.png](https://i.postimg.cc/g2CDm0wq/image.png)](https://postimg.cc/BjCDC4BX)
+   Либо 
+   ```bash
+   pytest --cov=src
+   ```
