@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="f">
+    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="added cors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -132,7 +132,151 @@
       <option name="project" value="LOCAL" />
       <updated>1734950485126</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1736435492591</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1736435492591</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1736436010420</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1736436010420</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1736436113800</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1736436113800</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1736436345338</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1736436345338</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1736436803037</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1736436803037</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1736437531062</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1736437531062</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1736438321755</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1736438321755</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Изменения:&#10;- Добавлена ручка для изменения баланса пользователя&#10;- Небольшой рефакторинг (вынес декодирование jwt в отдельную функцию)&#10;- Исправил баг со схемой в эндпоинте /telegram-login">
+      <option name="closed" value="true" />
+      <created>1736455210367</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1736455210367</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Тестово добавил логи в локи">
+      <option name="closed" value="true" />
+      <created>1736456712646</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1736456712646</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Фиксы">
+      <option name="closed" value="true" />
+      <created>1736457025328</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1736457025328</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Фиксы">
+      <option name="closed" value="true" />
+      <created>1736457395943</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736457395943</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Фиксы (надеюсь финальные)">
+      <option name="closed" value="true" />
+      <created>1736458032656</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736458032656</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Откат">
+      <option name="closed" value="true" />
+      <created>1736459238326</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1736459238326</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Откат">
+      <option name="closed" value="true" />
+      <created>1736459256098</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1736459256098</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Фиксы локи">
+      <option name="closed" value="true" />
+      <created>1736460125313</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1736460125313</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Добавлена ручка для изменения личной информации пользователя (ФИО, номер группы), небольшой рефакторинг">
+      <option name="closed" value="true" />
+      <created>1736541183349</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1736541183349</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Вернул общую сеть">
+      <option name="closed" value="true" />
+      <created>1736541213774</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1736541213774</updated>
+    </task>
+    <task id="LOCAL-00019" summary="added cors">
+      <option name="closed" value="true" />
+      <created>1736867449694</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1736867449694</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -148,6 +292,17 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
-    <option name="LAST_COMMIT_MESSAGE" value="init" />
+
+    <MESSAGE value="fixes" />
+    <MESSAGE value="Изменения:&#10;- Добавлена ручка для изменения баланса пользователя&#10;- Небольшой рефакторинг (вынес декодирование jwt в отдельную функцию)&#10;- Исправил баг со схемой в эндпоинте /telegram-login" />
+    <MESSAGE value="Тестово добавил логи в локи" />
+    <MESSAGE value="Фиксы" />
+    <MESSAGE value="Фиксы (надеюсь финальные)" />
+    <MESSAGE value="Откат" />
+    <MESSAGE value="Фиксы локи" />
+    <MESSAGE value="Добавлена ручка для изменения личной информации пользователя (ФИО, номер группы), небольшой рефакторинг" />
+    <MESSAGE value="Вернул общую сеть" />
+    <MESSAGE value="added cors" />
+    <option name="LAST_COMMIT_MESSAGE" value="added cors" />
   </component>
 </project>
