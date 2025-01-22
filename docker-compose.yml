@@ -13,6 +13,20 @@ services:
     networks:
       - skynet
 
+  db_test:
+    image: postgres:15
+    container_name: db_test
+    environment:
+      POSTGRES_USER: ${TEST_DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${TEST_DATABASE_PASSWORD:-postgres}
+      POSTGRES_DB: ${TEST_DATABASE_NAME:-test_db}
+    ports:
+      - "5433:5432"  # порт 5432 контейнера проброшен на порт 5433 хоста, чтобы избежать конфликта с другим контейнером
+#    volumes:
+#      - postgres_data_test:/var/lib/postgresql/data
+    networks:
+      - skynet
+
   app:
     build: .
     restart: always
@@ -32,7 +46,10 @@ networks:
   skynet:
     external: true
 
+
 # Volumes нужны, чтобы значения сохранялись вне зависимости от удаления либо рестарта контейнера
 volumes:
   postgres_data:
+#  postgres_data_test: # В принципе можно не пользоваться volumes для тестов, потому что все таблицы тестовой БД
+# очищаются после окончания тестов
 
