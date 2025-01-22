@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="added cors">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/deploy.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/deploy.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -292,7 +292,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
-
     <MESSAGE value="fixes" />
     <MESSAGE value="Изменения:&#10;- Добавлена ручка для изменения баланса пользователя&#10;- Небольшой рефакторинг (вынес декодирование jwt в отдельную функцию)&#10;- Исправил баг со схемой в эндпоинте /telegram-login" />
     <MESSAGE value="Тестово добавил логи в локи" />
