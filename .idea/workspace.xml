@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="Вернул общую сеть">
+    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="added cors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +47,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/levstremilov/PycharmProjects/PlayIt-auth-backend&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
@@ -267,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736541213774</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="added cors">
+      <option name="closed" value="true" />
+      <created>1736867449694</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1736867449694</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -292,6 +301,7 @@
     <MESSAGE value="Фиксы локи" />
     <MESSAGE value="Добавлена ручка для изменения личной информации пользователя (ФИО, номер группы), небольшой рефакторинг" />
     <MESSAGE value="Вернул общую сеть" />
-    <option name="LAST_COMMIT_MESSAGE" value="Вернул общую сеть" />
+    <MESSAGE value="added cors" />
+    <option name="LAST_COMMIT_MESSAGE" value="added cors" />
   </component>
 </project>
