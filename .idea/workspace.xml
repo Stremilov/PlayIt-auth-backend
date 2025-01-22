@@ -292,6 +292,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
+
     <MESSAGE value="fixes" />
     <MESSAGE value="Изменения:&#10;- Добавлена ручка для изменения баланса пользователя&#10;- Небольшой рефакторинг (вынес декодирование jwt в отдельную функцию)&#10;- Исправил баг со схемой в эндпоинте /telegram-login" />
     <MESSAGE value="Тестово добавил логи в локи" />

@@ -89,7 +89,7 @@ async def manage_balance(
     response_model=BaseResponse,
     summary="Изменение личной информации о пользователе",
     description="""
-    Изменяет баланс пользователю (как в положительную так и отрицательную сторону) и возвращает всего пользователя
+    Изменяет персональные данные пользователя (ФИО и номер группы) и возвращает всего пользователя
 
     - Проверяет наличие токена в куки, если его не будет, то вернёт 401 HTTP status_code;
     - Декодирует и проверяет JWT-токен, если он некорректен, то вернёт 401 HTTP status_code;
@@ -106,3 +106,4 @@ async def update_personal_user_data(
         session: Session = Depends(get_db_session),
 ):
     return await UserService.update_user_personal_data(request=request, session=session, new_data=new_data)
+
