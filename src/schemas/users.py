@@ -28,9 +28,6 @@ class UserSchema(BaseModel):
     done_tasks: int
     group_number: str
 
-    class Config:
-        from_attributes = True
-
 
 class UpdatePersonalDataSchema(BaseModel):
     full_name: Optional[str]
@@ -41,9 +38,6 @@ class UpdatePersonalDataSchema(BaseModel):
 class TelegramLoginResponse(BaseModel):
     status: str
     message: str
-
-    class Config:
-        from_attributes = True
 
 
 class BaseResponse(BaseModel):
