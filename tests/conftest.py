@@ -9,13 +9,16 @@ from httpx import AsyncClient, ASGITransport
 from main import app
 from src.db.db import Base, get_db_session
 
-
 # --- Загрузка переменных окружения (если нужно, то поменяйте в .env файле URL тестовой базы данных) ---
 load_dotenv()
-DATABASE_URL = os.getenv("TEST_DATABASE_URL", "postgresql://postgres:1234@localhost/test_db")
+TEST_DATABASE_PASSWORD = os.getenv("TEST_DATABASE_PASSWORD", "postgres")
+TEST_DATABASE_NAME = os.getenv("TEST_DATABASE_NAME", "test_db")
+TEST_DATABASE_USER = os.getenv("TEST_DATABASE_USER", "postgres")
+TEST_DATABASE_HOST = os.getenv("TEST_DATABASE_HOST", "db_test")  # Хост внутри Docker сети
+TEST_DATABASE_URL = f"postgresql://{TEST_DATABASE_USER}:{TEST_DATABASE_PASSWORD}@{TEST_DATABASE_HOST}:5432/{TEST_DATABASE_NAME}"
 
 # --- Создаём синхронный engine и sessionmaker для тестовой БД ---
-engine_test = create_engine(DATABASE_URL, future=True)
+engine_test = create_engine(TEST_DATABASE_URL, future=True)
 TestSession = sessionmaker(bind=engine_test, expire_on_commit=False)
 
 
