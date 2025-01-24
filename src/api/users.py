@@ -61,27 +61,7 @@ async def whoami(
     return await UserService.get_user_info(request=request, session=session)
 
 
-@router.put(
-    path="/balance/{value}",
-    response_model=BaseResponse,
-    summary="Изменение баланса пользователя",
-    description="""
-    Изменяет баланс пользователю (как в положительную так и отрицательную сторону) и возвращает всего пользователя
-    
-    - Проверяет наличие токена в куки, если его не будет, то вернёт 401 HTTP status_code;
-    - Декодирует и проверяет JWT-токен, если он некорректен, то вернёт 401 HTTP status_code;
-    - Ищет пользователя по username из JWT-токена в базе данных, если не находит, то возвращает 404 HTTP status_code;
-    - Изменяет баланс пользователя как в положительную так и отрицательную сторону (нужно передать или 100 или -100 к примеру)
-    - Возвращает все данные пользователя
-    """,
-    responses=update_user_balance_responses
-)
-async def manage_balance(
-        value: int,
-        request: Request,
-        session: Session = Depends(get_db_session),
-):
-    return await UserService.manage_user_balance(request=request, session=session, value=value)
+
 
 
 @router.put(

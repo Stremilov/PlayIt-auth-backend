@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="added cors">
+    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/users.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736867449694</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="fix">
+      <option name="closed" value="true" />
+      <created>1737552088659</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1737552088659</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -292,7 +301,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
-
     <MESSAGE value="fixes" />
     <MESSAGE value="Изменения:&#10;- Добавлена ручка для изменения баланса пользователя&#10;- Небольшой рефакторинг (вынес декодирование jwt в отдельную функцию)&#10;- Исправил баг со схемой в эндпоинте /telegram-login" />
     <MESSAGE value="Тестово добавил логи в локи" />
@@ -303,6 +311,7 @@
     <MESSAGE value="Добавлена ручка для изменения личной информации пользователя (ФИО, номер группы), небольшой рефакторинг" />
     <MESSAGE value="Вернул общую сеть" />
     <MESSAGE value="added cors" />
-    <option name="LAST_COMMIT_MESSAGE" value="added cors" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
 </project>
