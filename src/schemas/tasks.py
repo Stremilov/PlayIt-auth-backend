@@ -20,6 +20,6 @@ class TaskSchema(BaseModel):
     id: int
     user_id: int
     description: str
+    photo_path: str
+    value: int
     status: StatusEnum
-    created_at: datetime
-    updated_at: datetime

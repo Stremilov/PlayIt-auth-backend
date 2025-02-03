@@ -15,20 +15,20 @@ class Tasks(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     description = Column(Text, nullable=False)
+    photo_path = Column(String, nullable=False)
+    value = Column(Integer, nullable=False)
     status = Column(Enum(StatusEnum), default=StatusEnum.PENDING, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
-    users = relationship("Users", back_populates="tasks")
+    users = relationship("Users", back_populates="tasks", cascade="all, delete-orphan")
 
     def to_read_model(self) -> TaskSchema:
         return TaskSchema(
             id=self.id,
             user_id=self.user_id,
             description=self.description,
+            photo_path=self.photo_path,
+            value=self.value,
             status=self.status,
-            created_at=self.created_at,
-            updated_at=self.updated_at
         )
 
 
