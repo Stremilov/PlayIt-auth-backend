@@ -19,7 +19,7 @@ class Tasks(Base):
     value = Column(Integer, nullable=False)
     status = Column(Enum(StatusEnum), default=StatusEnum.PENDING, nullable=False)
 
-    users = relationship("Users", back_populates="tasks", cascade="all, delete-orphan")
+    users = relationship("Users", back_populates="tasks")
 
     def to_read_model(self) -> TaskSchema:
         return TaskSchema(
@@ -44,7 +44,7 @@ class Users(Base):
     done_tasks = Column(Integer, default=0, nullable=False)
     group_number = Column(String, default="", nullable=False)
 
-    tasks = relationship("Tasks", back_populates="users", cascade="all, delete-orphan")
+    tasks = relationship("Tasks", back_populates="users", cascade="all")
 
     def to_read_model(self) -> UserSchema:
         return UserSchema(
