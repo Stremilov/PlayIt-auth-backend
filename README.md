@@ -1,5 +1,5 @@
 
-# PlayIT dev branch
+# PlayIT main branch
 
 ## Использованные технологии
 ```
