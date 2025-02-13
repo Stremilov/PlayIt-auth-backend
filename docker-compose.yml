@@ -10,8 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-#    networks:
-#      - skynet
+    networks:
+      - skynet
 
 #  db_test:
 #    image: postgres:15
@@ -36,16 +36,16 @@ services:
     depends_on:
       - db
 #      - db_test # Для тестов
-#    networks:
-#      - skynet
-#    logging:
-#      driver: loki
-#      options:
-#        loki-url: http://localhost:3100/loki/api/v1/push
+    networks:
+      - skynet
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
-#networks:
-#  skynet:
-#    external: true
+networks:
+  skynet:
+    external: true
 
 
 # Volumes нужны, чтобы значения сохранялись вне зависимости от удаления либо рестарта контейнера
