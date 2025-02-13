@@ -3,7 +3,6 @@ from fastapi import Response
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-from psycopg2.errors import UniqueViolation
 from starlette import status
 
 from src.repositories.users import UserRepository
@@ -54,13 +53,10 @@ class UserService:
             )
 
         except IntegrityError as e:
-            # Проверяю, связана ли ошибка с уникальностью telegram_id
-            # Не проверяю связана ли с username'ом, так как ранее делал проверку существует ли пользователь
-            if isinstance(e.orig, UniqueViolation):
-                raise HTTPException(
-                    status_code=status.HTTP_409_CONFLICT,
-                    detail="Пользователь с таким telegram_id уже существует"
-                )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Пользователь с таким telegram_id уже существует"
+            )
 
         except Exception as e:
             # Ловлю любые неожиданные ошибки
@@ -90,7 +86,6 @@ class UserService:
                 message="Пользователь по этому jwt-токену найден.",
                 user=user
             )
-        # TODO: Выдавать 401, если токен недействителен, а не нагло перехватывать всё 500 статус кодом
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -101,23 +96,23 @@ class UserService:
     async def manage_user_balance(
             request: Request,
             session: Session,
-            value: int
+            value: int,
+            user_id: int,
+            task_id: int,
+            task_status: str
     ) -> BaseResponse:
         """
-        Получает значение и изменяет баланс пользователя на это значение
+        Получает значение и изменяет баланс пользователя на это значение, а также добавляет id задачи пользователю в "выполненные"
         """
         try:
-            user = await verify_user_by_jwt(request, session)
-            if not user:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
+            if task_status == "approved":
+                user = UserRepository.update_user_balance(session, user_id, value, task_id)
 
-            user = UserRepository.update_user_balance(session, user.username, value)
-
-            return BaseResponse(
-                status="success",
-                message="Баланс пользователя успешно обновлен",
-                user=user
-            )
+                return BaseResponse(
+                    status="success",
+                    message="Баланс пользователя успешно обновлен",
+                    user=user
+                )
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

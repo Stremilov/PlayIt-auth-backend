@@ -5,12 +5,12 @@ from src.db.db import get_db_session
 from src.schemas.users import (
     UserCreateSchema,
     TelegramLoginResponse,
-    UpdatePersonalDataSchema, BaseResponse
+    UpdatePersonalDataSchema, BaseResponse, UpdateUserBalanceData
 )
 from src.services.users import UserService
 from src.api.responses import (
     telegram_login_responses,
-    whoami_responses, update_user_balance_responses, update_user_personal_data_responses
+    whoami_responses, update_user_personal_data_responses, update_user_balance_responses
 )
 
 router = APIRouter(
@@ -61,9 +61,6 @@ async def whoami(
     return await UserService.get_user_info(request=request, session=session)
 
 
-
-
-
 @router.put(
     path="/personal-data",
     response_model=BaseResponse,
@@ -87,3 +84,26 @@ async def update_personal_user_data(
 ):
     return await UserService.update_user_personal_data(request=request, session=session, new_data=new_data)
 
+
+@router.patch(
+    path="/balance",
+    response_model=BaseResponse,
+    summary="Изменение баланса пользователя",
+    description="""
+    Изменяет баланс пользователю (как в положительную так и отрицательную сторону) и возвращает всего пользователя
+
+    - Ищет пользователя по id из post запроса из tg в базе данных, если не находит, то возвращает 404 HTTP status_code;
+    - Изменяет баланс пользователя как в положительную так и отрицательную сторону (нужно передать или 100 или -100 к примеру)
+    - Добавляет выполненную задачу пользователю
+    - Возвращает все данные пользователя
+    """,
+    responses=update_user_balance_responses,
+)
+async def manage_balance(
+    data: UpdateUserBalanceData,
+    request: Request,
+    session: Session = Depends(get_db_session),
+):
+    return await UserService.manage_user_balance(
+        request=request, session=session, value=data.value, user_id=data.user_id, task_id=data.task_id, task_status=data.status
+    )

@@ -4,9 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="added fields to tasks">
+    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/responses.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/responses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repositories/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repositories/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schemas/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/enums.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,7 +311,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738625927979</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="fix">
+      <option name="closed" value="true" />
+      <created>1738629224215</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1738629224215</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -327,8 +345,8 @@
     <MESSAGE value="Добавлена ручка для изменения личной информации пользователя (ФИО, номер группы), небольшой рефакторинг" />
     <MESSAGE value="Вернул общую сеть" />
     <MESSAGE value="added cors" />
-    <MESSAGE value="fix" />
     <MESSAGE value="added fields to tasks" />
-    <option name="LAST_COMMIT_MESSAGE" value="added fields to tasks" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
 </project>

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select, update, func
 from typing import Optional
 
 from src.models.models import Users
@@ -28,12 +28,20 @@ class UserRepository:
         return user.to_read_model()
 
     @staticmethod
-    def update_user_balance(session: Session, username: str, value: int):
-        statement = update(Users).where(Users.username == username).values(balance=Users.balance + value)
+    def update_user_balance(session: Session, user_id: int, value: int, task_id: int):
+        statement = update(Users).where(Users.id == user_id).values(balance=Users.balance + value)
         session.execute(statement)
+
+        update_tasks_stmt = (
+            update(Users)
+            .where(Users.id == user_id)
+            .values(done_tasks=func.array_append(Users.done_tasks, task_id))
+        )
+        session.execute(update_tasks_stmt)
+
         session.commit()
 
-        statement = select(Users).filter_by(username=username)
+        statement = select(Users).filter_by(id=user_id)
         result = session.execute(statement)
         user = result.scalar_one_or_none()
 

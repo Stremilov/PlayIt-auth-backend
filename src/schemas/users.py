@@ -1,6 +1,5 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
-from src.utils.enums import RoleEnum
 
 
 # Input schemas
@@ -13,7 +12,6 @@ class UserUpdateSchema(BaseModel):
     username: Optional[str]
     telegram_id: Optional[int]
     balance: Optional[int] = 0
-    role: Optional[RoleEnum]
     done_tasks: Optional[int] = 0
     group_number: Optional[str]
 
@@ -24,9 +22,8 @@ class UserSchema(BaseModel):
     full_name: str
     telegram_id: int
     balance: int
-    role: RoleEnum
-    done_tasks: int
-    group_number: str
+    done_tasks: List[int]
+    group_number: Optional[str]
 
 
 class UpdatePersonalDataSchema(BaseModel):
@@ -44,3 +41,10 @@ class BaseResponse(BaseModel):
     status: str
     message: str
     user: UserSchema
+
+
+class UpdateUserBalanceData(BaseModel):
+    task_id: int
+    user_id: int
+    value: int
+    status: str
