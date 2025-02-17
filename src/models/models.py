@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum, ARRAY
+from sqlalchemy import Column, Integer, String, DateTime, Enum, ARRAY, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -18,6 +18,8 @@ class Users(Base):
     done_tasks = Column(ARRAY(Integer), default=list, nullable=True)
     group_number = Column(String, default="", nullable=True)
 
+    prizes = relationship("Prize", back_populates="user")
+
     def to_read_model(self) -> UserSchema:
         return UserSchema(
             id=self.id,
@@ -30,11 +32,13 @@ class Users(Base):
         )
 
 
-class Transactions(Base):
-    __tablename__ = "transaction"
+class Prize(Base):
+    __tablename__ = "prizes"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    title = Column(String, nullable=False)
     value = Column(Integer, nullable=False)
-    transaction_time = Column(DateTime, default=datetime.utcnow, nullable=False)
 
+    user = relationship("Users", back_populates="prizes")
     # Перевод в transaction схему не сделал, т.к. не понятно, нужно ли ещё делать схемы для transaction

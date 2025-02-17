@@ -2,7 +2,7 @@ import asyncio
 import uvicorn
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 # from logging_loki import LokiHandler
 
 from src.db.db import init_db
@@ -27,6 +27,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        await websocket.send_text(f"{data}")
+
 
 for router in all_routers:
     app.include_router(router)
