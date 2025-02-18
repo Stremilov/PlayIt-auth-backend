@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from sqlalchemy import insert, select, update, func
 from typing import Optional
 
@@ -19,12 +19,13 @@ class UserRepository:
 
     @staticmethod
     def get_user_by_username(session: Session, username: str) -> Optional[UserSchema]:
-        statement = select(Users).filter_by(username=username)
+        statement = select(Users).filter_by(username=username).options(selectinload(Users.prizes))
         result = session.execute(statement)
 
         user = result.scalar_one_or_none()
         if not user:
             return None
+
         return user.to_read_model()
 
     @staticmethod

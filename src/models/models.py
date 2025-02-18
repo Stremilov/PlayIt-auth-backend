@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum, ARRAY, ForeignKey
+from sqlalchemy import Column, Integer, String, ARRAY, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime
 
 from src.db.db import Base
 
@@ -28,7 +27,8 @@ class Users(Base):
             telegram_id=self.telegram_id,
             balance=self.balance,
             done_tasks=self.done_tasks,
-            group_number=self.group_number
+            group_number=self.group_number,
+            prizes=[Prize(id=p.id, title=p.title, value=p.value) for p in self.prizes]
         )
 
 

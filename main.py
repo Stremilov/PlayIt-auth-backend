@@ -2,8 +2,7 @@ import asyncio
 import uvicorn
 import logging
 
-from fastapi import FastAPI, WebSocket
-# from logging_loki import LokiHandler
+from fastapi import FastAPI
 
 from src.db.db import init_db
 from src.api.routers import all_routers
@@ -20,6 +19,7 @@ app = FastAPI(root_path="/playit/auth")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://it-otdel.space",
         "http://localhost:5173",
         "http://127.0.0.1:5173"
     ],
@@ -27,14 +27,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        await websocket.send_text(f"{data}")
 
 
 for router in all_routers:
