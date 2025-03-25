@@ -1,5 +1,8 @@
+import csv
+
 from fastapi import HTTPException, Request
 from fastapi import Response
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
@@ -19,6 +22,21 @@ from src.jwt.tokens import (
 )
 
 
+def verify_data_check_string(data_check_string: str, expected_string: str, hash_value: str) -> bool:
+    return CryptContext(schemes=["sha256_crypt"]).verify(data_check_string, hash_value)
+
+
+# def find_user_by_username(csv_filename, tg_username):
+#     with open(csv_filename, mode='r', encoding='utf-8') as file:
+#         csv_reader = csv.DictReader(file)
+#
+#         for row in csv_reader:
+#             if row[tg_username] == tg_username:
+#                 return row['ФИО'], row['Академическая группа']
+#
+#         return None, None
+
+
 class UserService:
     @staticmethod
     async def auth_user(
@@ -31,9 +49,20 @@ class UserService:
         - Если пользователь существует, создаётся JWT-токен.
         - Если пользователь не существует, создаётся новый пользователь, а затем создаётся JWT-токен.
         """
+        csv_filename = ""
         username = user.username
         telegram_id = user.telegram_id
+        # data_check_string = user.data_check_string
+        # hash_value = user.hash
+        #
+        # if not verify_data_check_string(data_check_string, "?????", hash_value):
+        #     raise HTTPException(
+        #         status_code=status.HTTP_400_BAD_REQUEST,
+        #         detail="Неверная строка проверки или хэш"
+        #     )
+
         token = create_jwt_token(username, telegram_id)
+
         try:
             existing_user = UserRepository.get_user_by_username(session=session, username=username)
             if existing_user:
@@ -43,8 +72,24 @@ class UserService:
                     message="Logged in"
                 )
 
+            # full_name, group = find_user_by_username(csv_filename, username)
+            # if not full_name or not group:
+            #     raise HTTPException(
+            #         status_code=status.HTTP_404_NOT_FOUND,
+            #         detail=f"Пользователь с tg_username '{username}' не найден."
+            #     )
+
             users_dict = user.model_dump()
-            new_user = UserRepository.create_user(session=session, data=users_dict)
+
+            # TODO проверить
+            # users_dict = {
+            #     "full_name": full_name,
+            #     "group_number": group,
+            #     "username": username,
+            #     "telegram_id": telegram_id
+            # }
+
+            UserRepository.create_user(session=session, data=users_dict)
 
             response.set_cookie(key="jwt-token", value=token, httponly=True)
             return TelegramLoginResponse(

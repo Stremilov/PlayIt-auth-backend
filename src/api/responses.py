@@ -93,8 +93,12 @@ whoami_responses = {
                                 "telegram_id": 123456789,
                                 "balance": 100,
                                 "role": "USER",
-                                "done_tasks": 10,
-                                "group_number": "1A"
+                                "done_tasks": [5, 2, 52],
+                                "group_number": "1A",
+                                "prizes": [
+                                    {'id': 1, 'title': 'Gift Card', 'value': 50},
+                                    {'id': 2, 'title': 'Coffee Mug', 'value': 10}
+                                ],
                             }
                         }
                     }

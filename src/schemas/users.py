@@ -6,6 +6,8 @@ from pydantic import BaseModel
 class UserCreateSchema(BaseModel):
     username: str
     telegram_id: int
+    # data_check_string: str
+    # hash: str
 
 
 class UserUpdateSchema(BaseModel):
