@@ -26,15 +26,15 @@ def verify_data_check_string(data_check_string: str, expected_string: str, hash_
     return CryptContext(schemes=["sha256_crypt"]).verify(data_check_string, hash_value)
 
 
-# def find_user_by_username(csv_filename, tg_username):
-#     with open(csv_filename, mode='r', encoding='utf-8') as file:
-#         csv_reader = csv.DictReader(file)
-#
-#         for row in csv_reader:
-#             if row[tg_username] == tg_username:
-#                 return row['ФИО'], row['Академическая группа']
-#
-#         return None, None
+def find_user_by_username(csv_filename, tg_username):
+    with open(csv_filename, mode='r', encoding='utf-8') as file:
+        csv_reader = csv.DictReader(file)
+
+        for row in csv_reader:
+            if row['telegram_username'] == tg_username:
+                return row['name'], row['group']
+
+        return None, None
 
 
 class UserService:
@@ -72,22 +72,24 @@ class UserService:
                     message="Logged in"
                 )
 
-            # full_name, group = find_user_by_username(csv_filename, username)
-            # if not full_name or not group:
-            #     raise HTTPException(
-            #         status_code=status.HTTP_404_NOT_FOUND,
-            #         detail=f"Пользователь с tg_username '{username}' не найден."
-            #     )
+            full_name, group = find_user_by_username(csv_filename, username)
+            if not full_name or not group:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Пользователь с tg_username '{username}' не найден."
+                )
 
             users_dict = user.model_dump()
 
             # TODO проверить
-            # users_dict = {
-            #     "full_name": full_name,
-            #     "group_number": group,
-            #     "username": username,
-            #     "telegram_id": telegram_id
-            # }
+            users_dict = {
+                "full_name": full_name,
+                "group_number": group,
+                "username": username,
+                "telegram_id": telegram_id
+            }
+
+            print(users_dict)
 
             UserRepository.create_user(session=session, data=users_dict)
 
