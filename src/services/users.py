@@ -1,4 +1,5 @@
 import csv
+import logging
 
 from fastapi import HTTPException, Request
 from fastapi import Response
@@ -49,7 +50,7 @@ class UserService:
         - Если пользователь существует, создаётся JWT-токен.
         - Если пользователь не существует, создаётся новый пользователь, а затем создаётся JWT-токен.
         """
-        csv_filename = ""
+        csv_filename = "data.csv"
         username = user.username
         telegram_id = user.telegram_id
         # data_check_string = user.data_check_string
@@ -88,8 +89,6 @@ class UserService:
                 "username": username,
                 "telegram_id": telegram_id
             }
-
-            print(users_dict)
 
             UserRepository.create_user(session=session, data=users_dict)
 
