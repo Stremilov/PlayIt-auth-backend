@@ -64,54 +64,54 @@ class UserService:
 
         token = create_jwt_token(username, telegram_id)
 
-        try:
-            existing_user = UserRepository.get_user_by_username(session=session, username=username)
-            if existing_user:
-                response.set_cookie(key="jwt-token", value=token, httponly=True)
-                return TelegramLoginResponse(
-                    status="success",
-                    message="Logged in"
-                )
-
-            full_name, group = find_user_by_username(csv_filename, username)
-            if not full_name or not group:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Пользователь с tg_username '{username}' не найден."
-                )
-
-            users_dict = user.model_dump()
-
-            # TODO проверить
-            users_dict = {
-                "full_name": full_name,
-                "group_number": group,
-                "username": username,
-                "telegram_id": telegram_id
-            }
-
-            UserRepository.create_user(session=session, data=users_dict)
-
+        # try:
+        existing_user = UserRepository.get_user_by_username(session=session, username=username)
+        if existing_user:
             response.set_cookie(key="jwt-token", value=token, httponly=True)
             return TelegramLoginResponse(
                 status="success",
-                message="Registered and logged in"
+                message="Logged in"
             )
 
-        except IntegrityError as e:
+        full_name, group = find_user_by_username(csv_filename, username)
+        if not full_name or not group:
             raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Пользователь с таким telegram_id уже существует"
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Пользователь с tg_username '{username}' не найден."
             )
 
-        except Exception as e:
-            # Ловлю любые неожиданные ошибки
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Внутренняя ошибка базы данных: {e}"
-                # Решил не выводить здесь с помощью str(e) полностью ошибку, так как она раскрывает все поля
-                # базы данных, думаю так безопаснее
-            )
+        users_dict = user.model_dump()
+
+        # TODO проверить
+        users_dict = {
+            "full_name": full_name,
+            "group_number": group,
+            "username": username,
+            "telegram_id": telegram_id
+        }
+
+        UserRepository.create_user(session=session, data=users_dict)
+
+        response.set_cookie(key="jwt-token", value=token, httponly=True)
+        return TelegramLoginResponse(
+            status="success",
+            message="Registered and logged in"
+        )
+
+        # except IntegrityError as e:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_409_CONFLICT,
+        #         detail="Пользователь с таким telegram_id уже существует"
+        #     )
+
+        # except Exception as e:
+        #     # Ловлю любые неожиданные ошибки
+        #     raise HTTPException(
+        #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        #         detail=f"Внутренняя ошибка базы данных: {e}"
+        #         # Решил не выводить здесь с помощью str(e) полностью ошибку, так как она раскрывает все поля
+        #         # базы данных, думаю так безопаснее
+        #     )
 
     @staticmethod
     async def get_user_info(
