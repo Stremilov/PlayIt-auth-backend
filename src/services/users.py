@@ -17,7 +17,6 @@ from src.schemas.users import (
 )
 from src.utils.auth import verify_user_by_jwt
 
-
 from src.jwt.tokens import (
     create_jwt_token,
 )
@@ -150,6 +149,17 @@ class UserService:
         """
         Получает значение и изменяет баланс пользователя на это значение, а также добавляет id задачи пользователю в "выполненные"
         """
+        # Проверка по JWT-токену
+        try:
+            user = await verify_user_by_jwt(request, session)
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Произошла непредвиденная ошибка: {e}"
+            )
+
         try:
             if task_status == "approved":
                 user = UserRepository.update_user_balance(session, user_id, value, task_id)
@@ -174,6 +184,17 @@ class UserService:
         """
         Получает значение и изменяет баланс пользователя на это значение
         """
+        # Проверка по JWT-токену
+        try:
+            user = await verify_user_by_jwt(request, session)
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Произошла непредвиденная ошибка: {e}"
+            )
+
         try:
             if not new_data.full_name and not new_data.group_number:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Пустое тело запроса")
