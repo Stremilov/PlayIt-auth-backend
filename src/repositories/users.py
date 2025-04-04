@@ -19,7 +19,7 @@ class UserRepository:
 
     @staticmethod
     def get_user_by_username(session: Session, username: str) -> Optional[UserSchema]:
-        statement = select(Users).filter_by(username=username).options(selectinload(Users.prizes))
+        statement = select(Users).filter_by(username=username)
         result = session.execute(statement)
 
         user = result.scalar_one_or_none()
