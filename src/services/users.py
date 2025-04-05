@@ -86,7 +86,8 @@ class UserService:
             "full_name": full_name,
             "group_number": group,
             "username": username,
-            "telegram_id": telegram_id
+            "telegram_id": telegram_id,
+            "prizes": []
         }
 
         UserRepository.create_user(session=session, data=users_dict)
