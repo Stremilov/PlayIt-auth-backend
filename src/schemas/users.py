@@ -18,7 +18,7 @@ class UserUpdateSchema(BaseModel):
     group_number: Optional[str]
 
 
-class Prize(BaseModel):
+class PrizeSchema(BaseModel):
     id: int
     user_id: int
     title: str
@@ -33,7 +33,7 @@ class UserSchema(BaseModel):
     balance: int
     done_tasks: List[int]
     group_number: Optional[str]
-    prizes: Optional[List[Prize]] = []
+    prizes: Optional[List[PrizeSchema]] = []
 
 
 class UpdatePersonalDataSchema(BaseModel):

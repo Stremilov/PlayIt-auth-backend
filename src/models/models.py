@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 
 from src.db.db import Base
 
-from src.schemas.users import UserSchema, Prize as PrizeSchema
+from src.schemas.users import UserSchema, PrizeSchema
 
 
 class Users(Base):
@@ -49,7 +49,6 @@ class Prize(Base):
             user_id=self.user_id,
             title=self.title,
             value=self.value
-
         )
 
     # Перевод в transaction схему не сделал, т.к. не понятно, нужно ли ещё делать схемы для transaction
