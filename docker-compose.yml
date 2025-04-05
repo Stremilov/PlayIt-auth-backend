@@ -45,7 +45,7 @@ services:
 
 networks:
   skynet:
-#    external: true
+    external: true
 
 
 # Volumes нужны, чтобы значения сохранялись вне зависимости от удаления либо рестарта контейнера
