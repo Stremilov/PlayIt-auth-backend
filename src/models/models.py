@@ -20,7 +20,7 @@ class Users(Base):
     prizes = relationship("Prize", back_populates="user")
 
     def to_read_model(self) -> UserSchema:
-        prizes_data = [{"id": p.id, "title": p.title, "value": p.value} for p in self.prizes]
+        prizes_data = [{"id": p.id, "user_id": p.user_id, "title": p.title, "value": p.value} for p in self.prizes]
         return UserSchema(
             id=self.id,
             username=self.username,
