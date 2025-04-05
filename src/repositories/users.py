@@ -20,7 +20,7 @@ class UserRepository:
     @staticmethod
     def get_user_by_username(session: Session, username: str) -> Optional[UserSchema]:
         statement = select(Users).options(joinedload(Users.prizes)).filter_by(username=username)
-        result = session.execute(statement)
+        result = session.execute(statement).unique()
 
         user = result.scalar_one_or_none()
         if not user:
