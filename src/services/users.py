@@ -155,7 +155,9 @@ class UserService:
             user = await verify_user_by_jwt(request, session)
             if not user:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
+            logging.debug(f"Пользователь найден: {user}")
         except Exception as e:
+            logging.error(f"Ошибка при верификации JWT: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Произошла непредвиденная ошибка: {e}"
