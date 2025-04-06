@@ -1,3 +1,5 @@
+import logging
+
 from sqlalchemy.orm import Session, selectinload, joinedload
 from sqlalchemy import insert, select, update, func
 from typing import Optional
@@ -31,19 +33,23 @@ class UserRepository:
     @staticmethod
     def update_user_balance(session: Session, user_id: int, value: int, task_id: int):
         statement = update(Users).where(Users.id == user_id).values(balance=Users.balance + value)
-        session.execute(statement)
+        result = session.execute(statement)
+        logging.debug(result)
 
         update_tasks_stmt = (
             update(Users)
             .where(Users.id == user_id)
             .values(done_tasks=func.array_append(Users.done_tasks, task_id))
         )
-        session.execute(update_tasks_stmt)
+        result = session.execute(update_tasks_stmt)
+        logging.debug(result)
 
         session.commit()
 
         statement = select(Users).filter_by(id=user_id)
         result = session.execute(statement)
+        logging.debug(result)
+
         user = result.scalar_one_or_none()
 
         if not user:

@@ -160,10 +160,11 @@ class UserService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Произошла непредвиденная ошибка: {e}"
             )
-
+        logging.debug({value, user_id, task_id, task_status})
         try:
             if task_status == "approved":
                 user = UserRepository.update_user_balance(session, user_id, value, task_id)
+                logging.debug(user)
 
                 return BaseResponse(
                     status="success",
