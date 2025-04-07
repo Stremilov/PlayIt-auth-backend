@@ -105,5 +105,5 @@ async def manage_balance(
     session: Session = Depends(get_db_session),
 ):
     return await UserService.manage_user_balance(
-        request=request, session=session, value=data.value, user_id=data.user_id, task_id=data.task_id, task_status=data.status
+        request=request, session=session, value=data.value, user_id=data.user_id, task_id=data.task_id, task_status=data.status, tg=data.tg
     )
