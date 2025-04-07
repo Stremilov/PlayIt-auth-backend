@@ -145,23 +145,25 @@ class UserService:
             value: int,
             user_id: int,
             task_id: int,
-            task_status: str
+            task_status: str,
+            tg: bool
     ) -> BaseResponse:
         """
         Получает значение и изменяет баланс пользователя на это значение, а также добавляет id задачи пользователю в "выполненные"
         """
         # Проверка по JWT-токену
-        try:
-            user = await verify_user_by_jwt(request, session)
-            if not user:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
-            logging.debug(f"Пользователь найден: {user}")
-        except Exception as e:
-            logging.error(f"Ошибка при верификации JWT: {e}")
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Произошла непредвиденная ошибка: {e}"
-            )
+        if not tg:
+            try:
+                user = await verify_user_by_jwt(request, session)
+                if not user:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
+                logging.debug(f"Пользователь найден: {user}")
+            except Exception as e:
+                logging.error(f"Ошибка при верификации JWT: {e}")
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail=f"Произошла непредвиденная ошибка: {e}"
+                )
         logging.debug({value, user_id, task_id, task_status})
         try:
             if task_status == "approved":
