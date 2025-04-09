@@ -175,6 +175,13 @@ class UserService:
                     message="Баланс пользователя успешно обновлен",
                     user=user
                 )
+            elif task_status == "rejected":
+                user = UserRepository.delete_task_from_in_progress(session=session, user_id=user_id, task_id=task_id)
+                return BaseResponse(
+                    status="success",
+                    message="Задача удалена из статуса 'На проверке'",
+                    user=user
+                )
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
