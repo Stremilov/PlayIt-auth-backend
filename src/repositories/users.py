@@ -107,7 +107,7 @@ class UserRepository:
             )
             session.execute(remove_task_stmt)
             logging.debug(f"Удален task_id {task_id} из in_progress.")
-
+            session.commit()
         statement = select(Users).filter_by(id=user_id)
         result = session.execute(statement)
         logging.debug(result)
