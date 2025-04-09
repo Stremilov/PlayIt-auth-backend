@@ -32,6 +32,7 @@ class UserSchema(BaseModel):
     telegram_id: int
     balance: int
     done_tasks: List[int]
+    in_progress: List[int]
     group_number: Optional[str]
     prizes: Optional[List[PrizeSchema]] = []
 

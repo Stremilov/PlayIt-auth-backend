@@ -15,6 +15,7 @@ class Users(Base):
     telegram_id = Column(Integer, unique=True, nullable=True)
     balance = Column(Integer, default=0, nullable=False)
     done_tasks = Column(ARRAY(Integer), default=list, nullable=True)
+    in_progress = Column(ARRAY(Integer), default=list, nullable=True)
     group_number = Column(String, default="", nullable=True)
 
     prizes = relationship("Prize", back_populates="user")
@@ -28,6 +29,7 @@ class Users(Base):
             telegram_id=self.telegram_id,
             balance=self.balance,
             done_tasks=self.done_tasks,
+            in_progress=self.in_progress,
             group_number=self.group_number,
             prizes=prizes_data
         )

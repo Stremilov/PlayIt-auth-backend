@@ -32,6 +32,23 @@ class UserRepository:
 
     @staticmethod
     def update_user_balance(session: Session, user_id: int, value: int, task_id: int):
+        user_check_stmt = select(Users.in_progress).where(Users.id == user_id)
+        result = session.execute(user_check_stmt)
+        user_in_progress = result.scalar_one_or_none()
+
+        if user_in_progress and task_id in user_in_progress:
+            remove_task_stmt = update(Users).where(Users.id == user_id).values(
+                in_progress=func.array_remove(Users.in_progress, task_id)
+            )
+            session.execute(remove_task_stmt)
+            logging.debug(f"Удален task_id {task_id} из in_progress.")
+
+            update_done_tasks_stmt = update(Users).where(Users.id == user_id).values(
+                done_tasks=func.array_append(Users.done_tasks, task_id)
+            )
+            session.execute(update_done_tasks_stmt)
+            logging.debug(f"Добавлен task_id {task_id} в done_tasks.")
+
         statement = update(Users).where(Users.id == user_id).values(balance=Users.balance + value)
         result = session.execute(statement)
         logging.debug(result)
