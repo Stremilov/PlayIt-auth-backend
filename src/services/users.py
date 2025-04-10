@@ -20,6 +20,7 @@ from src.utils.auth import verify_user_by_jwt
 from src.jwt.tokens import (
     create_jwt_token,
 )
+from src.utils.bot import notify_user_task_checked
 
 
 def verify_data_check_string(data_check_string: str, expected_string: str, hash_value: str) -> bool:
@@ -168,6 +169,7 @@ class UserService:
         try:
             if task_status == "approved":
                 user = UserRepository.update_user_balance(session, user_id, value, task_id)
+                await notify_user_task_checked(session=session, user_id=user_id)
                 logging.debug(user)
 
                 return BaseResponse(
@@ -177,6 +179,7 @@ class UserService:
                 )
             elif task_status == "rejected":
                 user = UserRepository.delete_task_from_in_progress(session=session, user_id=user_id, task_id=task_id)
+                await notify_user_task_checked(session=session, user_id=user_id)
                 return BaseResponse(
                     status="success",
                     message="Задача удалена из статуса 'На проверке'",
