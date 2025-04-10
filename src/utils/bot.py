@@ -60,7 +60,7 @@ async def notify_user_task_checked_correctly(session: Session, user_id: int, tas
         return
 
     message = (f"Здрав будь, добрый молодец или красна девица!\nЗадание твоё проверено! Всё правильно ты решил, "
-               f"славно потрудился!\n\n Задание {characters[task_id]} решено верно ✅")
+               f"славно потрудился!\n\n Задание «{characters[task_id]}» решено верно ✅")
 
     try:
         await bot.send_message(chat_id=user.telegram_id, text=message)
@@ -77,7 +77,7 @@ async def notify_user_task_checked_incorrectly(session: Session, user_id: int, t
         return
 
     message = (f"Здрав будь, добрый молодец или красна девица!\nЗадание твоё проверено! Увы, но не правильно ты его "
-               f"решил, попробуй ещё раз!\n\nЗадание {characters[task_id]} решено неверно ❌")
+               f"решил, попробуй ещё раз!\n\nЗадание «{characters[task_id]}» решено неверно ❌")
 
     try:
         await bot.send_message(chat_id=user.telegram_id, text=message)
