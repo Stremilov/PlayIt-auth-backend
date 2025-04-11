@@ -120,3 +120,15 @@ class UserRepository:
         if not user:
             return None
         return user.to_read_model()
+
+    @staticmethod
+    def get_top_users_by_balance(session: Session) -> list[UserSchema]:
+        statement = (
+            select(Users)
+            .order_by(Users.balance.desc())
+            .limit(10)
+            .options(selectinload(Users.prizes))
+        )
+        result = session.execute(statement)
+        users = result.scalars().all()
+        return [u.to_read_model() for u in users]

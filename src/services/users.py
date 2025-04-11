@@ -13,7 +13,7 @@ from src.repositories.users import UserRepository
 from src.schemas.users import (
     UserCreateSchema,
     TelegramLoginResponse,
-    UpdatePersonalDataSchema, BaseResponse,
+    UpdatePersonalDataSchema, BaseResponse, UserSchema,
 )
 from src.utils.auth import verify_user_by_jwt
 
@@ -238,4 +238,15 @@ class UserService:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Произошла непредвиденная ошибка: {e}"
+            )
+
+    @staticmethod
+    async def get_top_users_by_balance(session: Session) -> list[UserSchema]:
+        try:
+            top_users = UserRepository.get_top_users_by_balance(session)
+            return top_users
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Ошибка при получении топ-юзеров: {e}"
             )

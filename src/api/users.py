@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, Response, Request, Cookie
 from sqlalchemy.orm import Session
 
@@ -5,7 +7,7 @@ from src.db.db import get_db_session
 from src.schemas.users import (
     UserCreateSchema,
     TelegramLoginResponse,
-    UpdatePersonalDataSchema, BaseResponse, UpdateUserBalanceData
+    UpdatePersonalDataSchema, BaseResponse, UpdateUserBalanceData, UserSchema
 )
 from src.services.users import UserService
 from src.api.responses import (
@@ -107,3 +109,12 @@ async def manage_balance(
     return await UserService.manage_user_balance(
         request=request, session=session, value=data.value, user_id=data.user_id, task_id=data.task_id, task_status=data.status, tg=data.tg
     )
+
+
+@router.get(
+    path="/top-users",
+    response_model=List[UserSchema],
+    summary="Топ-5 пользователей по балансу"
+)
+async def get_top_users(session: Session = Depends(get_db_session)):
+    return await UserService.get_top_users_by_balance(session=session)
