@@ -90,7 +90,10 @@ class UserService:
             "full_name": full_name,
             "group_number": group,
             "username": username,
-            "telegram_id": telegram_id
+            "telegram_id": telegram_id,
+            "done_tasks": [],
+            "in_progress": [],
+            "balance": 0
         }
         try:
             logging.info(users_dict)
