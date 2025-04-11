@@ -76,6 +76,7 @@ class UserService:
                 )
 
             full_name, group = find_user_by_username(csv_filename, username)
+            logging.info({full_name, group})
             if not full_name or not group:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,

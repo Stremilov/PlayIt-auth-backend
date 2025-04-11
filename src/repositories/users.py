@@ -13,10 +13,13 @@ class UserRepository:
     def create_user(session: Session, data: dict) -> UserSchema:
         statement = insert(Users).values(**data).returning(Users)
         result = session.execute(statement)
+        logging.info(result)
         session.commit()
 
         created_user = result.scalars().first()
+        logging.info(created_user)
         new_user = created_user.to_read_model()
+        logging.info(new_user)
         return new_user
 
     @staticmethod
