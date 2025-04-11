@@ -20,6 +20,7 @@ class UserUpdateSchema(BaseModel):
 
 class PrizeSchema(BaseModel):
     id: int
+    prize_id: int
     user_id: int
     title: str
     value: int

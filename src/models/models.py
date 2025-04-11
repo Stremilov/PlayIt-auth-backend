@@ -39,6 +39,7 @@ class Prize(Base):
     __tablename__ = "prizes"
 
     id = Column(Integer, primary_key=True)
+    prize_id = Column(Integer, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     title = Column(String, nullable=False)
     value = Column(Integer, nullable=False)
@@ -48,6 +49,7 @@ class Prize(Base):
     def to_read_model(self) -> PrizeSchema:
         return PrizeSchema(
             id=self.id,
+            prize_id=self.prize_id,
             user_id=self.user_id,
             title=self.title,
             value=self.value

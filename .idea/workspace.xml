@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="commit" />
+    <list default="true" id="9b7b590f-6f03-45d3-9341-637f5739b22d" name="Changes" comment="commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -472,7 +474,47 @@
       <option name="project" value="LOCAL" />
       <updated>1744226243716</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="commit">
+      <option name="closed" value="true" />
+      <created>1744227149667</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1744227149667</updated>
+    </task>
+    <task id="LOCAL-00045" summary="commit">
+      <option name="closed" value="true" />
+      <created>1744227967894</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1744227967894</updated>
+    </task>
+    <task id="LOCAL-00046" summary="commit">
+      <option name="closed" value="true" />
+      <created>1744289153699</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1744289153699</updated>
+    </task>
+    <task id="LOCAL-00047" summary="commit">
+      <option name="closed" value="true" />
+      <created>1744300294119</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1744300294119</updated>
+    </task>
+    <task id="LOCAL-00048" summary="commit">
+      <option name="closed" value="true" />
+      <created>1744303731153</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1744303731153</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
