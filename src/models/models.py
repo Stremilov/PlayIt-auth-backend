@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ARRAY, ForeignKey
+from sqlalchemy import Column, Integer, String, ARRAY, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship
 
 from src.db.db import Base
@@ -12,7 +12,7 @@ class Users(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(150), unique=True, nullable=False)
     full_name = Column(String, default="", nullable=False)
-    telegram_id = Column(Integer, unique=True, nullable=True)
+    telegram_id = Column(BigInteger, unique=True, nullable=True)
     balance = Column(Integer, default=0, nullable=False)
     done_tasks = Column(ARRAY(Integer), default=list, nullable=True)
     in_progress = Column(ARRAY(Integer), default=list, nullable=True)
