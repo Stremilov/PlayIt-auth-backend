@@ -53,6 +53,7 @@ class UserService:
         csv_filename = "data.csv"
         username = user.username
         telegram_id = user.telegram_id
+        logging.info({username, telegram_id})
         # data_check_string = user.data_check_string
         # hash_value = user.hash
         #
@@ -63,6 +64,7 @@ class UserService:
         #     )
 
         token = create_jwt_token(username, telegram_id)
+        logging.info(token)
 
         try:
             existing_user = UserRepository.get_user_by_username(session=session, username=username)
@@ -90,6 +92,7 @@ class UserService:
             "telegram_id": telegram_id
         }
         try:
+            logging.info(users_dict)
             UserRepository.create_user(session=session, data=users_dict)
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Ошибка при создании юзера ")
