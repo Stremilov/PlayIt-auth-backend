@@ -99,7 +99,8 @@ class UserService:
             logging.info(users_dict)
             UserRepository.create_user(session=session, data=users_dict)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Ошибка при создании юзера ")
+            logging.error(e)
+            raise HTTPException(status_code=500, detail=f"Ошибка при создании юзера: {e}")
         response.set_cookie(key="jwt-token", value=token, httponly=True)
         return TelegramLoginResponse(
             status="success",
