@@ -113,7 +113,7 @@ async def manage_balance(
 
 @router.get(
     path="/top-users",
-    response_model=List[UserSchema],
+    response_model=tuple[List[UserSchema], dict],
     summary="Топ-5 пользователей по балансу"
 )
 async def get_top_users(request: Request, session: Session = Depends(get_db_session)):

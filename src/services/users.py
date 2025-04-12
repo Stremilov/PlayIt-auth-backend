@@ -241,7 +241,7 @@ class UserService:
             )
 
     @staticmethod
-    async def get_top_users_by_balance(session: Session, request: Request) -> tuple[list[UserSchema, dict]]:
+    async def get_top_users_by_balance(session: Session, request: Request) -> tuple[list[UserSchema], dict]:
         try:
             user = await verify_user_by_jwt(request, session)
             if not user:
