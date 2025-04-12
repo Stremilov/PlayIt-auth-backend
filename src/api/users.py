@@ -116,5 +116,5 @@ async def manage_balance(
     response_model=List[UserSchema],
     summary="Топ-5 пользователей по балансу"
 )
-async def get_top_users(session: Session = Depends(get_db_session)):
-    return await UserService.get_top_users_by_balance(session=session)
+async def get_top_users(request: Request, session: Session = Depends(get_db_session)):
+    return await UserService.get_top_users_by_balance(session=session, request=request)

@@ -18,7 +18,7 @@ from src.schemas.users import (
 from src.utils.auth import verify_user_by_jwt
 
 from src.jwt.tokens import (
-    create_jwt_token,
+    create_jwt_token, verify_jwt_token,
 )
 from src.utils.bot import notify_user_task_checked_correctly, notify_user_task_checked_incorrectly
 
@@ -241,9 +241,21 @@ class UserService:
             )
 
     @staticmethod
-    async def get_top_users_by_balance(session: Session) -> list[UserSchema]:
+    async def get_top_users_by_balance(session: Session, request: Request) -> tuple[list[UserSchema, dict]]:
         try:
-            top_users = UserRepository.get_top_users_by_balance(session)
+            user = await verify_user_by_jwt(request, session)
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Произошла непредвиденная ошибка: {e}"
+            )
+        try:
+            token = request.cookies.get("jwt-token")
+            verified_token = verify_jwt_token(token)
+            telegram_id = verified_token.get("telegram_id")
+            top_users = UserRepository.get_top_users_by_balance(session, telegram_id)
             return top_users
         except Exception as e:
             raise HTTPException(

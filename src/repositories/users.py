@@ -121,14 +121,45 @@ class UserRepository:
             return None
         return user.to_read_model()
 
+
     @staticmethod
-    def get_top_users_by_balance(session: Session) -> list[UserSchema]:
-        statement = (
+    def get_top_users_by_balance(session: Session, telegram_id: int):
+        top_statement = (
             select(Users)
             .order_by(Users.balance.desc())
             .limit(10)
             .options(selectinload(Users.prizes))
         )
-        result = session.execute(statement)
-        users = result.scalars().all()
-        return [u.to_read_model() for u in users]
+        top_result = session.execute(top_statement)
+        top_users = top_result.scalars().all()
+        top_users_schema = [u.to_read_model() for u in top_users]
+
+        user_info = None
+        if telegram_id is not None:
+            rank_subquery = (
+                select(
+                    Users.id.label("id"),
+                    Users.telegram_id.label("telegram_id"),
+                    Users.username.label("username"),
+                    func.rank().over(order_by=Users.balance.desc()).label("rank")
+                ).subquery()
+            )
+
+            rank_stmt = (
+                select(
+                    rank_subquery.c.rank,
+                    rank_subquery.c.username,
+                    rank_subquery.c.telegram_id
+                ).where(rank_subquery.c.telegram_id == telegram_id)
+            )
+            result = session.execute(rank_stmt).mappings().first()
+
+            if result:
+                user_info = {
+                    "rank": result["rank"],
+                    "username": result["username"],
+                    "telegram_id": result["telegram_id"]
+                }
+
+        return top_users_schema, user_info
+
