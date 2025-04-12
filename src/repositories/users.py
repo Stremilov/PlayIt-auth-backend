@@ -121,45 +121,50 @@ class UserRepository:
             return None
         return user.to_read_model()
 
-
     @staticmethod
     def get_top_users_by_balance(session: Session, telegram_id: int):
-        top_statement = (
+        statement = (
             select(Users)
-            .order_by(Users.balance.desc())
-            .limit(10)
             .options(selectinload(Users.prizes))
         )
-        top_result = session.execute(top_statement)
-        top_users = top_result.scalars().all()
-        top_users_schema = [u.to_read_model() for u in top_users]
+        result = session.execute(statement)
+        users = result.scalars().all()
+
+        def calculate_possible_balance(user):
+            done_tasks = set(user.done_tasks)
+            return sum([
+                {
+                    1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100,
+                    7: 200, 8: 200, 9: 200, 10: 200, 11: 200,
+                    12: 200, 13: 200, 14: 300, 15: 300, 16: 300,
+                    17: 100, 18: 100, 19: 100, 20: 200, 21: 200,
+                    22: 200, 23: 200, 24: 200, 25: 300, 26: 300,
+                    27: 300, 28: 100, 29: 100, 30: 200, 31: 200,
+                    32: 300, 33: 300, 34: 300, 35: 300, 36: 300
+                }.get(task_id, 0)
+                for task_id in done_tasks
+            ])
+
+        enriched_users = [{
+            "user": user,
+            "max_balance": calculate_possible_balance(user)
+        } for user in users]
+
+        enriched_users.sort(key=lambda x: x["max_balance"], reverse=True)
+
+        top_users = [u["user"].to_read_model() for u in enriched_users[:10]]
 
         user_info = None
         if telegram_id is not None:
-            rank_subquery = (
-                select(
-                    Users.id.label("id"),
-                    Users.telegram_id.label("telegram_id"),
-                    Users.username.label("username"),
-                    func.rank().over(order_by=Users.balance.desc()).label("rank")
-                ).subquery()
-            )
+            for index, entry in enumerate(enriched_users):
+                if entry["user"].telegram_id == telegram_id:
+                    user_info = {
+                        "rank": index + 1,
+                        "username": entry["user"].username,
+                        "telegram_id": entry["user"].telegram_id,
+                        "max_possible_balance": entry["max_balance"]
+                    }
+                    break
 
-            rank_stmt = (
-                select(
-                    rank_subquery.c.rank,
-                    rank_subquery.c.username,
-                    rank_subquery.c.telegram_id
-                ).where(rank_subquery.c.telegram_id == telegram_id)
-            )
-            result = session.execute(rank_stmt).mappings().first()
-
-            if result:
-                user_info = {
-                    "rank": result["rank"],
-                    "username": result["username"],
-                    "telegram_id": result["telegram_id"]
-                }
-
-        return top_users_schema, user_info
+        return top_users, user_info
 
